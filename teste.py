@@ -41,50 +41,6 @@ while run:
     #carregar fundo
     screen.fill(BG) #Carregar cor de fundo
 
-    #Ler teclas
-    pressionada = pygame.key.get_pressed()
-    mover = False
-
-    if pressionada[pygame.K_RIGHT]:
-        action = 0  # andar direita
-        if x + vel_movimento + 100 <= LARGURA_SCREEN:  # 64 é a largura do sprite
-            x += vel_movimento
-            mover = True    
-        else:
-            mover = False
-    elif pressionada[pygame.K_LEFT]:
-        action = 1  # andar esquerda
-        x -= vel_movimento
-        mover = True
-    elif pressionada[pygame.K_UP]:
-        action = 2  # andar frente
-        y -= vel_movimento
-        mover = True
-    elif pressionada[pygame.K_DOWN]:
-        action = 3  # andar tras
-        y += vel_movimento
-        mover = True
-    elif pressionada[pygame.K_SPACE]:
-        action = 4  # morrer
-        mover = True
-
-
-    #atualizar animacao
-    current_time = pygame.time.get_ticks()
-    if mover:
-        if current_time - last_update >= animation_cooldown:
-            frame += 1
-            if frame >= len(animation_list[action]):
-                frame = 0
-
-            last_update = current_time
-    else:
-        frame = 0
-
-    #mostrar imagem por frame  
-    screen.blit(animation_list[action][frame], (x, y))
-
-
     #Eventos
     for event in pygame.event.get():
         if event.type == pygame.QUIT: #Quando clica no x em cima sai do jogo
