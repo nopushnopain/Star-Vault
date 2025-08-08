@@ -6,7 +6,7 @@ LARGURA_SCREEN = 1600
 ALTURA_SCREEN = 900
 
 screen = pygame.display.set_mode((LARGURA_SCREEN, ALTURA_SCREEN))
-pygame.display.set_caption("Spritesheets")
+pygame.display.set_caption("Star Vault")
 
 sprite_sheet_image = pygame.image.load(r"animacoes_e_fotos/Sprite.png").convert_alpha()
 sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
