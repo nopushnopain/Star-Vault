@@ -8,7 +8,7 @@ ALTURA_SCREEN = 900
 screen = pygame.display.set_mode((LARGURA_SCREEN, ALTURA_SCREEN))
 pygame.display.set_caption("Spritesheets")
 
-sprite_sheet_image = pygame.image.load(r"Code\Sprite.png").convert_alpha()
+sprite_sheet_image = pygame.image.load(r"animacoes_e_fotos/Sprite.png").convert_alpha()
 sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
 
 BG = (50, 50, 50) #Cor de fundo
