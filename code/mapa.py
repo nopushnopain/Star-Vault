@@ -1,8 +1,8 @@
 import pygame
-from settings import *
+from debug import debug
 from ladrilho import Ladrilho
 from player import Player
-from debug import debug
+from settings import *
 
 
 class Mapa:
@@ -12,12 +12,11 @@ class Mapa:
         self.display_superficie = pygame.display.get_surface()
         
         # seta o grupo do sprite
-        self.sprites_visiveis = pygame.sprite.Group()
+        self.sprites_visiveis = classificaCameraY()
         self.sprites_obstaculos = pygame.sprite.Group()
         
         # seta o sprite
         self.criar_mapa()
-        
         
     def criar_mapa(self):
         for idx_linha, linha in enumerate(WORLD_MAP):
@@ -27,15 +26,29 @@ class Mapa:
                 if coluna == 'x':
                     Ladrilho((x,y), [self.sprites_visiveis, self.sprites_obstaculos])
                 if coluna == 'p':
-                    self.player = Player((x,y), [self.sprites_visiveis])
+                    self.player = Player((x,y), [self.sprites_visiveis], self.sprites_obstaculos)
                     
-    
-    
-    
-    
     def run(self):
         # atualiza e desenha o jogo
-        self.sprites_visiveis.draw(self.display_superficie)
+        self.sprites_visiveis.customizaDesenho(self.player)
         self.sprites_visiveis.update()
-        debug(self.player.direcao)
+    
+class classificaCameraY(pygame.sprite.Group):
+    def __init__(self):
         
+        # setup geral
+        super().__init__()
+        self.display_superficie = pygame.display.get_surface()
+        self.metade_largura = self.display_superficie.get_size()[0] // 2 # pega metade da figura
+        self.metade_altura = self.display_superficie.get_size()[1] // 2
+        self.deslocamento = pygame.math.Vector2(100, 200) # deslocamento da camera
+        
+    def customizaDesenho(self, player):
+        
+        # pega o deslocamento
+        self.deslocamento.x = player.rect.centerx - self.metade_largura
+        self.deslocamento.y = player.rect.centery - self.metade_altura
+        
+        for sprite in self.sprites():
+            posicao_deslocado = sprite.rect.topleft - self.deslocamento
+            self.display_superficie.blit(sprite.image, posicao_deslocado)

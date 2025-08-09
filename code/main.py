@@ -1,7 +1,10 @@
-import pygame, sys
-from settings import *
-from debug import debug # auxilia implementacao das parada (nao importante)
+import sys
+
+import pygame
+from debug import debug  # auxilia implementacao das parada (nao importante)
 from mapa import Mapa
+from settings import *
+
 
 class Game:
     def __init__(self):

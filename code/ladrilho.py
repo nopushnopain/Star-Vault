@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class Ladrilho(pygame.sprite.Sprite):
     def __init__(self, pos, grupos):
         super().__init__(grupos)
