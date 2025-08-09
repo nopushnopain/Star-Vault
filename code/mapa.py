@@ -1,83 +1,81 @@
 import pygame
-from debug import debug  # noqa: F401
-from ladrilho import Ladrilho  # noqa: F401
-from player import Player
-from settings import * # * significa tudo  # noqa: F403
-from suporte import *  # noqa: F403
+from debug import debug  # depuração
+from ladrilho import Ladrilho
+from player import Jogador
+from settings import * 
+from suporte import *  
 from random import choice
-
 
 class Mapa:
     def __init__(self):
+        # referência à superfície da janela
+        self.superficie_display = pygame.display.get_surface()
         
-        # exibe a superficie
-        self.display_superficie = pygame.display.get_surface()
+        # grupos de sprites
+        self.sprites_visiveis = GrupoCamera()
+        self.sprites_colisao = pygame.sprite.Group()
         
-        # seta o grupo do sprite
-        self.sprites_visiveis = classificaCameraY()
-        self.sprites_obstaculos = pygame.sprite.Group()
-        
-        # seta o sprite
+        # cria o mapa
         self.criar_mapa()
         
     def criar_mapa(self):
+        # layouts de mapa via CSV
         layouts = {
-            'limite': import_csv_layout('mapa/mapa_blocoschao.csv'),  # noqa: F405
-            'grama': import_csv_layout('mapa/mapa_grama.csv'),  # noqa: F405
-            'objetos': import_csv_layout('mapa/mapa_objetos.csv')  # noqa: F405
+            'limite': import_csv_layout('mapa_csv/mapa_blocoschao.csv'),
+            'grama': import_csv_layout('mapa_csv/mapa_grama.csv'),
+            'objetos': import_csv_layout('mapa_csv/mapa_objetos.csv')
         }
+        # imagens do mapa
         graficos = {
-            'grama': importa_pasta('graficos/grama'),  # noqa: F405
-            'objetos': importa_pasta('graficos/objetos')  # noqa: F405
+            'grama': importa_pasta('graficos/grama'),
+            'objetos': importa_pasta('graficos/objetos')
         }
-        for estilo, layout in layouts.items():
-            for idx_linha, linha in enumerate(layout):
-                for idx_coluna, coluna in enumerate(linha):
-                    if coluna != '-1':
-                        x = idx_coluna * LADRILHOSIZE  # noqa: F405
-                        y = idx_linha  * LADRILHOSIZE  # noqa: F405
-                        if estilo == 'limite':
-                            Ladrilho((x,y), [self.sprites_obstaculos], 'invisivel')
-                        # cria o ladrilho da grama
-                        if estilo == 'grass':
-                            imagem_grama_random = choice(graficos['grama'])
-                            Ladrilho((x,y),[self.sprites_visiveis, self.sprites_obstaculos], 'grama', imagem_grama_random)
-                        if estilo == 'objetos':
-                            superficie = graficos['objetos'][int(coluna)]
-                            Ladrilho((x,y), [self.sprites_visiveis, self.sprites_obstaculos],'objetos', superficie)
+        # geração de elementos do mapa
+        for tipo, layout in layouts.items():
+            for linha_idx, linha in enumerate(layout):
+                for coluna_idx, valor in enumerate(linha):
+                    if valor != '-1':
+                        x = coluna_idx * LADRILHOSIZE
+                        y = linha_idx  * LADRILHOSIZE
+                        if tipo == 'limite':
+                            Ladrilho((x, y), [self.sprites_colisao], 'invisivel')
+                        elif tipo == 'grama':
+                            grama_random = choice(graficos['grama'])
+                            Ladrilho((x, y), [self.sprites_visiveis, self.sprites_colisao], 'grama', grama_random)
+                        elif tipo == 'objetos':
+                            superficie_obj = graficos['objetos'][int(valor)]
+                            Ladrilho((x, y), [self.sprites_visiveis, self.sprites_colisao], 'objetos', superficie_obj)
         
-
-        self.player = Player((2000,1430), [self.sprites_visiveis], self.sprites_obstaculos)                        
-    def run(self):
-        # atualiza e desenha o jogo
-        self.sprites_visiveis.customizaDesenho(self.player)
-        self.sprites_visiveis.update()
+        # adiciona jogador
+        self.jogador = Jogador((2000, 1430), [self.sprites_visiveis], self.sprites_colisao)                        
     
-class classificaCameraY(pygame.sprite.Group):
+    def run(self):
+        # atualiza e desenha o mapa
+        self.sprites_visiveis.desenhar_com_camera(self.jogador)
+        self.sprites_visiveis.update()
+
+class GrupoCamera(pygame.sprite.Group):
     def __init__(self):
-        
-        # setup geral
         super().__init__()
-        self.display_superficie = pygame.display.get_surface()
-        self.metade_largura = self.display_superficie.get_size()[0] // 2 # pega metade da figura
-        self.metade_altura = self.display_superficie.get_size()[1] // 2
-        self.deslocamento = pygame.math.Vector2(100, 200) # deslocamento da camera
-        
-        # criando o chao
-        self.superficieDoChao = pygame.image.load('graficos/tilemap/ground.png').convert()
-        self.superficieDoRetangulo = self.superficieDoChao.get_rect(topleft = (0,0))
+        self.superficie_display = pygame.display.get_surface()
+        self.metade_largura = self.superficie_display.get_size()[0] // 2
+        self.metade_altura = self.superficie_display.get_size()[1] // 2
+        self.deslocamento = pygame.math.Vector2(100, 200)
+    
+        # chão do cenário
+        self.superficie_chao = pygame.image.load('graficos/componentes_mapa/ground.png').convert()
+        self.rect_chao = self.superficie_chao.get_rect(topleft=(0, 0))
 
-    def customizaDesenho(self, player):
+    def desenhar_com_camera(self, jogador):
+        # ajusta deslocamento da câmera
+        self.deslocamento.x = jogador.rect.centerx - self.metade_largura
+        self.deslocamento.y = jogador.rect.centery - self.metade_altura
         
-        # pega o deslocamento
-        self.deslocamento.x = player.rect.centerx - self.metade_largura
-        self.deslocamento.y = player.rect.centery - self.metade_altura
-        
-        # desenhando o chao
-        deslocamento_chao_posicao = self.superficieDoRetangulo.topleft - self.deslocamento
-        self.display_superficie.blit(self.superficieDoChao, deslocamento_chao_posicao)
+        # desenha chão
+        pos_chao = self.rect_chao.topleft - self.deslocamento
+        self.superficie_display.blit(self.superficie_chao, pos_chao)
 
-        # for sprite in self.sprites():
-        for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
-            posicao_deslocado = sprite.rect.topleft - self.deslocamento
-            self.display_superficie.blit(sprite.image, posicao_deslocado)
+        # desenha sprites na ordem Y
+        for sprite in sorted(self.sprites(), key=lambda s: s.rect.centery):
+            pos_sprite = sprite.rect.topleft - self.deslocamento
+            self.superficie_display.blit(sprite.image, pos_sprite)

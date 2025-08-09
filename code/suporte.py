@@ -2,22 +2,21 @@ import pygame
 from csv import reader
 from os import walk
 
+def import_csv_layout(caminho):
+    # importa layout CSV do mapa
+    layout_terreno = []
+    with open(caminho) as arquivo_mapa:
+        leitor = reader(arquivo_mapa, delimiter=',')
+        for linha in leitor:
+            layout_terreno.append(list(linha))
+    return layout_terreno
 
-def import_csv_layout(path):
-    terreno_mapa = []
-    with open(path) as mapa_:
-        layout = reader(mapa_, delimiter = ',')
-        for linha in layout:
-            terreno_mapa.append(list(linha))
-        return terreno_mapa
-    
-
-def importa_pasta(path):
-    lista_superficie = []
-    for _,__,img_files in walk(path):
-        for imagem in img_files:
-            full_path = path + '/' + imagem
-            superficie_imagem = pygame.image.load(full_path).convert_alpha()
-            lista_superficie.append(superficie_imagem)
-
-    return lista_superficie
+def importa_pasta(caminho):
+    # importa todas as imagens da pasta
+    lista_superficies = []
+    for _, __, arquivos_img in walk(caminho):
+        for imagem in arquivos_img:
+            caminho_completo = f"{caminho}/{imagem}"
+            superficie_img = pygame.image.load(caminho_completo).convert_alpha()
+            lista_superficies.append(superficie_img)
+    return lista_superficies

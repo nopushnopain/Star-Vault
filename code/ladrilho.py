@@ -1,14 +1,17 @@
 import pygame
-from settings import *  # noqa: F403
-
+from settings import *
 
 class Ladrilho(pygame.sprite.Sprite):
-    def __init__(self, pos, grupos, sprite_type, superficie = pygame.Surface((LADRILHOSIZE, LADRILHOSIZE))):  # noqa: F405
+    def __init__(self, pos, grupos, tipo_sprite, superficie=pygame.Surface((LADRILHOSIZE, LADRILHOSIZE))):
         super().__init__(grupos)
-        self.sprite_type = sprite_type
+        self.tipo_sprite = tipo_sprite
         self.image = superficie
-        if sprite_type == 'objetos':
-            self.rect = self.image.get_rect(topleft = (pos[0],pos[1] - LADRILHOSIZE))
+        
+        # ajusta posição dependendo do tipo
+        if tipo_sprite == 'objetos':
+            self.rect = self.image.get_rect(topleft=(pos[0], pos[1] - LADRILHOSIZE))
         else:
-            self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(0,-10) # pega o retangulo da imagem e muda o tamanho
+            self.rect = self.image.get_rect(topleft=pos)
+        
+        # hitbox reduzida
+        self.hitbox = self.rect.inflate(0, -10)
