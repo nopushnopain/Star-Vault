@@ -27,7 +27,7 @@ class Mapa:
                 if coluna == 'x':
                     Ladrilho((x,y), [self.sprites_visiveis, self.sprites_obstaculos])
                 if coluna == 'p':
-                    self.player = Player((x,y), [self.sprites_visiveis])
+                    self.player = Player((x,y), [self.sprites_visiveis], self.sprites_obstaculos)
                     
     
     
@@ -37,5 +37,6 @@ class Mapa:
         # atualiza e desenha o jogo
         self.sprites_visiveis.draw(self.display_superficie)
         self.sprites_visiveis.update()
-        debug(self.player.direcao)
+        debug(self.player.direction)
+        
         
