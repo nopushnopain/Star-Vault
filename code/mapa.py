@@ -13,7 +13,7 @@ class Mapa:
         
         # seta o grupo do sprite
         self.sprites_visiveis = pygame.sprite.Group()
-        self.sprites_obstaculos = pygame.sprite.Group()
+        self.sprites_obstaculos = pygame.sprite.Group() #Basicamente uma lista
         
         # seta o sprite
         self.criar_mapa()
@@ -37,6 +37,6 @@ class Mapa:
         # atualiza e desenha o jogo
         self.sprites_visiveis.draw(self.display_superficie)
         self.sprites_visiveis.update()
-        debug(self.player.direction)
+        debug(self.player.status)
         
         

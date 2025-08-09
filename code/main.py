@@ -3,7 +3,7 @@ from settings import *
 from debug import debug # auxilia implementacao das parada (nao importante)
 from mapa import Mapa
 
-class Game:
+class Game:   
     def __init__(self):
         
         # setup geral
