@@ -1,9 +1,8 @@
 import sys
-
 import pygame
 from debug import debug  # auxilia implementacao das parada (nao importante)
 from mapa import Mapa
-from settings import *
+from settings import * # * significa tudo
 
 
 class Game:

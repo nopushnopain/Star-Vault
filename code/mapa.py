@@ -2,7 +2,7 @@ import pygame
 from debug import debug
 from ladrilho import Ladrilho
 from player import Player
-from settings import *
+from settings import * # * significa tudo
 
 
 class Mapa:
@@ -49,6 +49,7 @@ class classificaCameraY(pygame.sprite.Group):
         self.deslocamento.x = player.rect.centerx - self.metade_largura
         self.deslocamento.y = player.rect.centery - self.metade_altura
         
-        for sprite in self.sprites():
+        # for sprite in self.sprites():
+        for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
             posicao_deslocado = sprite.rect.topleft - self.deslocamento
             self.display_superficie.blit(sprite.image, posicao_deslocado)
