@@ -7,11 +7,14 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups) 
         self.image = pygame.image.load(r"graficos\Protagonista\Idle_baixo\a09ee047-069d-405f-8f4f-4f1c36b4d10a.png")
         self.rect = self.image.get_rect(topleft = pos) #rect lida com posicao e colisao de sprites
+        # Ajusta hitbox para ficar menor, por exemplo, reduzindo largura e altura
+        self.hitbox = self.rect.inflate(-20, -40)  # diminui 20px na largura e 40px na altura
+
         #graficos
         self.import_player_assets()
         self.status = "Idle_baixo"
         self.indice_frame = 0
-        self.animation_speed = 0.17
+        self.animation_speed = 0.15
         #movimento
         self.direction = pygame.math.Vector2() #armazena as pos x,y
         self.speed = 5
@@ -94,27 +97,27 @@ class Player(pygame.sprite.Sprite):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 
-        self.rect.x += self.direction.x*speed
+        self.hitbox.x += self.direction.x*speed
         self.collision("horizontal")
-        self.rect.y += self.direction.y*speed
+        self.hitbox.y += self.direction.y*speed
         self.collision("vertical")
 
     def collision(self, direction):
         if direction == "horizontal":
             for sprites in self.obstacle_sprites:
-                if sprites.rect.colliderect(self.rect):
+                if sprites.rect.colliderect(self.hitbox):
                     if self.direction.x > 0: #colisao ao mover para a direita
-                        self.rect.right = sprites.rect.left
+                        self.hitbox.right = sprites.rect.left
                     if self.direction.x < 0: #colisao ao mover para a esquerda
-                        self.rect.left = sprites.rect.right
+                        self.hitbox.left = sprites.rect.right
                     
         if direction == "vertical":
             for sprites in self.obstacle_sprites:
-                if sprites.rect.colliderect(self.rect):
+                if sprites.rect.colliderect(self.hitbox):
                     if self.direction.y > 0: #colisao ao mover para baixo
-                        self.rect.bottom = sprites.rect.top
+                        self.hitbox.bottom = sprites.rect.top
                     if self.direction.y < 0: #colisao ao mover para cima
-                        self.rect.top = sprites.rect.bottom
+                        self.hitbox.top = sprites.rect.bottom
 
     def animate(self):
         animacao = self.animacoes[self.status]
@@ -123,14 +126,10 @@ class Player(pygame.sprite.Sprite):
         self.indice_frame += self.animation_speed
         if self.indice_frame >= len(animacao):
             self.indice_frame = 0
-        
-        # guardar posição atual antes de trocar a imagem
-        centro_atual = self.rect.center
-
+    
         #setar imagem
         self.image = animacao[int(self.indice_frame)]
-        self.rect = self.image.get_rect(center = centro_atual)
-
+        self.rect = self.image.get_rect(center = self.hitbox.center)
 
     def update(self): 
         self.input()
