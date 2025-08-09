@@ -1,8 +1,8 @@
 import sys
 import pygame
-from debug import debug  # auxilia implementacao das parada (nao importante)
+from debug import debug  # auxilia implementacao das parada (nao importante)  # noqa: F401
 from mapa import Mapa
-from settings import * # * significa tudo
+from settings import * # * significa tudo  # noqa: F403
 
 
 class Game:
@@ -11,7 +11,7 @@ class Game:
         # setup geral
         pygame.init()
         pygame.display.set_caption("Star Vault")
-        self.screen = pygame.display.set_mode((LARGURA, ALTURA)) # importado do settings
+        self.screen = pygame.display.set_mode((LARGURA, ALTURA)) # importado do settings  # noqa: F405
         self.clock = pygame.time.Clock()
         self.mapa = Mapa() # inicializa o mapa
         
@@ -27,7 +27,7 @@ class Game:
             self.screen.fill('black')
             self.mapa.run()
             pygame.display.update()
-            self.clock.tick(FPS) # fps do jogo importado do settings
+            self.clock.tick(FPS) # fps do jogo importado do settings  # noqa: F405
         
 if __name__ == '__main__':
     game = Game()

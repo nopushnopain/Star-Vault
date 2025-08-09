@@ -1,11 +1,11 @@
 import pygame
-from settings import *
+from settings import *  # noqa: F403
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, grupos, sprites_obstaculos):
         super().__init__(grupos)
-        self.image = pygame.image.load('graficos/test/yoda.png').convert_alpha()
+        self.image = pygame.image.load('graficos/test/player.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0,-26)
         

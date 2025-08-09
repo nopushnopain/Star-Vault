@@ -1,8 +1,10 @@
 import pygame
-from debug import debug
-from ladrilho import Ladrilho
+from debug import debug  # noqa: F401
+from ladrilho import Ladrilho  # noqa: F401
 from player import Player
-from settings import * # * significa tudo
+from settings import * # * significa tudo  # noqa: F403
+from suporte import *  # noqa: F403
+from random import choice
 
 
 class Mapa:
@@ -19,14 +21,32 @@ class Mapa:
         self.criar_mapa()
         
     def criar_mapa(self):
-        # for idx_linha, linha in enumerate(WORLD_MAP):
-        #     for idx_coluna, coluna in enumerate(linha):
-        #         x = idx_coluna * LADRILHOSIZE
-        #         y = idx_linha  * LADRILHOSIZE
-        #         if coluna == 'x':
-        #             Ladrilho((x,y), [self.sprites_visiveis, self.sprites_obstaculos])
-        #         if coluna == 'p':
-        #             self.player = Player((x,y), [self.sprites_visiveis], self.sprites_obstaculos)
+        layouts = {
+            'limite': import_csv_layout('mapa/mapa_blocoschao.csv'),  # noqa: F405
+            'grama': import_csv_layout('mapa/mapa_grama.csv'),  # noqa: F405
+            'objetos': import_csv_layout('mapa/mapa_objetos.csv')  # noqa: F405
+        }
+        graficos = {
+            'grama': importa_pasta('graficos/grama'),  # noqa: F405
+            'objetos': importa_pasta('graficos/objetos')  # noqa: F405
+        }
+        for estilo, layout in layouts.items():
+            for idx_linha, linha in enumerate(layout):
+                for idx_coluna, coluna in enumerate(linha):
+                    if coluna != '-1':
+                        x = idx_coluna * LADRILHOSIZE  # noqa: F405
+                        y = idx_linha  * LADRILHOSIZE  # noqa: F405
+                        if estilo == 'limite':
+                            Ladrilho((x,y), [self.sprites_obstaculos], 'invisivel')
+                        # cria o ladrilho da grama
+                        if estilo == 'grass':
+                            imagem_grama_random = choice(graficos['grama'])
+                            Ladrilho((x,y),[self.sprites_visiveis, self.sprites_obstaculos], 'grama', imagem_grama_random)
+                        if estilo == 'objetos':
+                            superficie = graficos['objetos'][int(coluna)]
+                            Ladrilho((x,y), [self.sprites_visiveis, self.sprites_obstaculos],'objetos', superficie)
+        
+
         self.player = Player((2000,1430), [self.sprites_visiveis], self.sprites_obstaculos)                        
     def run(self):
         # atualiza e desenha o jogo
