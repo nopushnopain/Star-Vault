@@ -10,7 +10,7 @@ class Game:
         pygame.init()
         pygame.display.set_caption("Star Vault")
         self.screen = pygame.display.set_mode((LARGURA, ALTURA)) # importado do settings
-        self.clock = pygame.time.Clock()
+        self.clock = pygame.time.Clock() 
         self.mapa = Mapa() # inicializa o mapa
         
     def run(self):

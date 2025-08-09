@@ -5,12 +5,8 @@ from support import import_folder
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstaculo_sprite):
         super().__init__(groups) 
-        self.image = pygame.image.load(r"graficos\Protagonista\Idle_baixo\2.png")
-        largura = self.image.get_width()
-        altura = self.image.get_height()
-        self.image = pygame.transform.scale(self.image, (largura*1.5 , altura*1.5))
+        self.image = pygame.image.load(r"graficos\Protagonista\Idle_baixo\a09ee047-069d-405f-8f4f-4f1c36b4d10a.png")
         self.rect = self.image.get_rect(topleft = pos) #rect lida com posicao e colisao de sprites
-
         #graficos
         self.import_player_assets()
         self.status = "Idle_baixo"
@@ -34,7 +30,7 @@ class Player(pygame.sprite.Sprite):
 
         for animacao in self.animacoes.keys():
             caminho = caminho_protag + "/" + animacao
-            self.animacoes[animacao] = import_folder(caminho)
+            self.animacoes[animacao] = import_folder(caminho, 1.5)
 
     def get_status(self):
 
@@ -62,23 +58,24 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_UP]:
-            self.direction.y = -1
-            self.status = "Andar_cima"
-        elif keys[pygame.K_DOWN]:
-            self.direction.y = 1
-            self.status = "Andar_baixo"
-        else:
-            self.direction.y = 0
-        
-        if keys[pygame.K_RIGHT]:
-            self.direction.x = 1
-            self.status = "Andar_direita"
-        elif keys[pygame.K_LEFT]:
-            self.direction.x = -1
-            self.status = "Andar_esquerda"
-        else:
-            self.direction.x = 0
+        if not self.atacando:
+            if keys[pygame.K_UP]:
+                self.direction.y = -1
+                self.status = "Andar_cima"
+            elif keys[pygame.K_DOWN]:
+                self.direction.y = 1
+                self.status = "Andar_baixo"
+            else:
+                self.direction.y = 0
+            
+            if keys[pygame.K_RIGHT]:
+                self.direction.x = 1
+                self.status = "Andar_direita"
+            elif keys[pygame.K_LEFT]:
+                self.direction.x = -1
+                self.status = "Andar_esquerda"
+            else:
+                self.direction.x = 0
         
         #ataque
         if keys[pygame.K_SPACE] and self.atacando == False:
@@ -127,9 +124,12 @@ class Player(pygame.sprite.Sprite):
         if self.indice_frame >= len(animacao):
             self.indice_frame = 0
         
+        # guardar posição atual antes de trocar a imagem
+        centro_atual = self.rect.center
+
         #setar imagem
         self.image = animacao[int(self.indice_frame)]
-        #self.rect = self.image.get_rect(center = self.hitbox.center)
+        self.rect = self.image.get_rect(center = centro_atual)
 
 
     def update(self): 
