@@ -47,7 +47,7 @@ class Mapa:
                             Ladrilho((x, y), [self.sprites_visiveis, self.sprites_colisao], 'objetos', superficie_obj)
         
         # adiciona jogador
-        self.jogador = Jogador((2000, 1430), [self.sprites_visiveis], self.sprites_colisao)                        
+        self.jogador = Jogador((2000, 1350), [self.sprites_visiveis], self.sprites_colisao)                        
     
     def run(self):
         # atualiza e desenha o mapa
