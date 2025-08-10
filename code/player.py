@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(r"graficos\Protagonista\Idle_baixo\a09ee047-069d-405f-8f4f-4f1c36b4d10a.png")
         self.rect = self.image.get_rect(topleft = pos) #rect lida com posicao e colisao de sprites
         # Ajusta hitbox para ficar menor, por exemplo, reduzindo largura e altura
-        self.hitbox = self.rect.inflate(-20, -40)  # diminui 20px na largura e 40px na altura
+        self.hitbox = self.rect.inflate(-10, -10)  # diminui 20px na largura e 40px na altura
 
         #graficos
         self.import_player_assets()
@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.obstacle_sprites = obstaculo_sprite
 
     def import_player_assets(self):
-        caminho_protag = r"C:\Users\lucia\OneDrive\Área de Trabalho\Luciano\Github\Star-Vault\graficos\Protagonista"
+        caminho_protag = r"graficos\Protagonista"
 
         self.animacoes = {"Andar_cima": [], "Andar_baixo": [], "Andar_esquerda": [], "Andar_direita": [],
                           "Atacar_cima": [], "Atacar_baixo": [], "Atacar_esquerda": [], "Atacar_direita": [],
