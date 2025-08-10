@@ -7,7 +7,7 @@ class Jogador(pygame.sprite.Sprite):
         super().__init__(grupos) 
 
         # imagem inicial (sprite base)
-        self.image = pygame.image.load(r"graficos\protagonista\Idle_baixo\a09ee047-069d-405f-8f4f-4f1c36b4d10a.png")
+        self.image = pygame.image.load(r"graficos/protagonista/Idle_baixo/a09ee047-069d-405f-8f4f-4f1c36b4d10a.png")
         self.rect = self.image.get_rect(topleft=posicao)  # posição inicial
        
         # animações
