@@ -1,33 +1,31 @@
-import pygame, sys
-from settings import *
-from debug import debug # auxilia implementacao das parada (nao importante)
+import sys
+import pygame
+from debug import debug  # ferramenta de depuração (não essencial)
 from mapa import Mapa
+from settings import *  # importa todas as configurações
 
-class Game:   
+class Jogo:
     def __init__(self):
-        
-        # setup geral
+        # configuração inicial
         pygame.init()
-        pygame.display.set_caption("Star Vault")
-        self.screen = pygame.display.set_mode((LARGURA, ALTURA)) # importado do settings
-        self.clock = pygame.time.Clock() 
-        self.mapa = Mapa() # inicializa o mapa
+        pygame.display.set_caption("Star Vault")  # título da janela
+        self.janela = pygame.display.set_mode((LARGURA, ALTURA))  # cria janela
+        self.relogio = pygame.time.Clock()  # controle de FPS
+        self.mapa_jogo = Mapa()  # inicializa o mapa
         
-    def run(self):
+    def executar(self):
         while True:
-            
-            # fecha no x
-            for acao in pygame.event.get(): 
-                if acao.type == pygame.QUIT:
+            # processa eventos
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:  # fechar no "X"
                     pygame.quit()
                     sys.exit()
                     
-            self.screen.fill('black')
-            self.mapa.run()
-            pygame.display.update()
-            self.clock.tick(FPS) # fps do jogo importado do settings
+            self.janela.fill('black')  # limpa tela
+            self.mapa_jogo.run()  # atualiza mapa
+            pygame.display.update()  # atualiza tela
+            self.relogio.tick(FPS)  # limita FPS
         
 if __name__ == '__main__':
-    game = Game()
-    game.run()
-    
+    jogo = Jogo()
+    jogo.executar()
