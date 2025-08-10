@@ -2,10 +2,10 @@
 
 
 - Coletáveis: José
-- Inimigos: Gabriel
-- Mapa: Vitor
+- Inimigos:   Gabriel
+- Mapa:       Vitor
 - Personagem: Luciano
-- UI: João
+- UI:         João
 
 
 # Instruções p/ o grupo
