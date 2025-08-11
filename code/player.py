@@ -32,7 +32,7 @@ class Jogador(pygame.sprite.Sprite):
 
     # carrega todos os sprites do personagem para animação
     def importar_sprites_personagem(self):
-        caminho_base = r"graficos\protagonista"
+        caminho_base = r"graficos/protagonista"
         self.animacoes = {
             "Andar_cima": [], "Andar_baixo": [], "Andar_esquerda": [], "Andar_direita": [],
             "Atacar_cima": [], "Atacar_baixo": [], "Atacar_esquerda": [], "Atacar_direita": [],
