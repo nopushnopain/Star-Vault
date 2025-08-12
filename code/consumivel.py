@@ -6,7 +6,7 @@ class Itens(pygame.sprite.Sprite):
         super().__init__(*grupos)
         self.tipo = tipo
         self.image = pygame.image.load(arquivo_imagem).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.image = pygame.transform.scale(self.image, (25, 25))
         self.rect = self.image.get_rect(topleft=(x, y))
         
 

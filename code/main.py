@@ -89,6 +89,7 @@ class Jogo:
                 debug(f"Vida: {getattr(self.jogador, 'vida', 0)}", 10, LARGURA - 10)
                 debug(f"Ataque: {getattr(self.jogador, 'ataque', 0)}", 30, LARGURA - 10)
                 debug(f"Velocidade: {self.jogador.velocidade}", 50, LARGURA - 10)
+                debug(f"Atacando: {self.jogador.debug_ataque}", 70, LARGURA - 10)
 
                 
                 pygame.display.update()  # atualiza tela

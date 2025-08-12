@@ -15,6 +15,11 @@ class Mapa:
         # grupos de sprites
         self.sprites_visiveis = GrupoCamera()
         self.sprites_colisao = pygame.sprite.Group()
+
+        #sprites de ataque
+        self.ataque_atual = None
+        self.sprite_ataque = pygame.sprite.Group() #personagem
+        self.sprite_atacavel = pygame.sprite.Group() #inimigos
         
         # cria o mapa
         self.criar_mapa()
@@ -40,14 +45,18 @@ class Mapa:
                     if valor != '-1':
                         x = coluna_idx * LADRILHOSIZE
                         y = linha_idx  * LADRILHOSIZE
+
                         if tipo == 'limite':
                             Ladrilho((x, y), [self.sprites_colisao], 'invisivel')
+
                         elif tipo == 'grama':
                             grama_random = choice(graficos['grama'])
                             Ladrilho((x, y), [self.sprites_visiveis, self.sprites_colisao], 'grama', grama_random)
+
                         elif tipo == 'objetos':
                             superficie_obj = graficos['objetos'][int(valor)]
                             Ladrilho((x, y), [self.sprites_visiveis, self.sprites_colisao], 'objetos', superficie_obj)
+
                         elif tipo == 'inimigos':
                             if valor == '390' or valor == '391' or valor == '392' or valor == '393':
                                 nome_inimigo = 'Blue'
@@ -61,6 +70,10 @@ class Mapa:
         self.sprites_visiveis.desenhar_com_camera(self.jogador)
         self.sprites_visiveis.update()
         self.sprites_visiveis.enemy_update(self.jogador)
+
+        inimigos = [sprite for sprite in self.sprites_visiveis if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'inimigo']
+        self.jogador.atacar(inimigos)
+
 
 
 class GrupoCamera(pygame.sprite.Group):

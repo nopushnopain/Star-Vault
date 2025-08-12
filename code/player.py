@@ -12,7 +12,7 @@ class Jogador(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=posicao)  # posição inicial
 
         # Ajusta hitbox para ficar menor, por exemplo, reduzindo largura e altura
-        self.hitbox = self.rect.inflate(-60, -60)  # diminui 20px na largura e 40px na altura
+        self.hitbox = self.rect.inflate(-60, -60)  # diminui 60px na largura e 60px na altura
                
         # animações
         self.importar_sprites_personagem()
@@ -39,6 +39,8 @@ class Jogador(pygame.sprite.Sprite):
         #sons
         self.som_golpe = pygame.mixer.Sound(r"assets\sword-sound-260274.mp3")
         self.som_golpe.set_volume(0.4)
+
+        self.debug_ataque = False
 
     # carrega todos os sprites do personagem para animação
     def importar_sprites_personagem(self):
@@ -148,16 +150,50 @@ class Jogador(pygame.sprite.Sprite):
         if item.tipo == "vida":
             self.vida += 1
         elif item.tipo == "velocidade":
-            self.velocidade += 3  #balanciamento
+            self.velocidade += 1  #balanciamento
         elif item.tipo == "ataque":
-            self.ataque += 5 #balanciamento
+            self.ataque += 2 #balanciamento
             
     #checa colisao com os itens
     def checar_colisao_itens(self):
         if self.items:
-            colisoes = pygame.sprite.spritecollide(self, self.items, True)
+            colisoes = []
+
+            for item in self.items:
+                if self.hitbox.colliderect(item.rect):
+                    colisoes.append(item)
+            
             for item in colisoes:
+                item.kill()
                 self.aplicar_efeito(item)
+
+    #Interaçao de Ataque com inimigos
+    def atacar(self, inimigos):
+        if self.atacando:
+            hitbox_ataque = self.hitbox.copy()
+
+            #aumentar o range de ataque para onde o personagem olha
+            if "baixo" in self.estado:
+                hitbox_ataque.y += 40
+            
+            elif "cima" in self.estado:
+                hitbox_ataque.y -= 40
+            
+            elif "direita" in self.estado:
+                hitbox_ataque.x += 40
+            
+            elif "esquerda" in self.estado:
+                hitbox_ataque.x -= 40
+            
+            hitbox_ataque.inflate_ip(20, 20) #aumentar range lateral
+
+            for inimigo in inimigos:
+                if hitbox_ataque.colliderect(inimigo.hitbox):
+                    inimigo.vida -= self.ataque
+                    if inimigo.vida <= 0:
+                        inimigo.kill()
+                    self.debug_ataque = True
+  
 
     # controla animação do personagem
     def animar(self):

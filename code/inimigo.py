@@ -39,9 +39,9 @@ class enemy (Entity):
         for animation in self.animacoes.keys():
             self.animacoes[animation] = import_folder(caminho + animation)
 
-    def get_jogador_distancia_direcao(self,player):
+    def get_jogador_distancia_direcao(self,jogador):
         inimigo_vec = pygame.math.Vector2(self.rect.center)
-        jogador_vec = pygame.math.Vector2(player.rect.center)
+        jogador_vec = pygame.math.Vector2(jogador.rect.center)
         distancia = (jogador_vec - inimigo_vec).magnitude()
         
         if distancia > 0:
@@ -51,8 +51,8 @@ class enemy (Entity):
 
         return (distancia, direcao)
     
-    def get_status(self,player):
-        distancia = self.get_jogador_distancia_direcao(player)[0]
+    def get_status(self,jogador):
+        distancia = self.get_jogador_distancia_direcao(jogador)[0]
 
         if distancia <= self.raio_ataque and self.can_ataque:
             if self.status != 'ataque':
@@ -63,11 +63,16 @@ class enemy (Entity):
         else:
             self.status = 'idle'
 
-    def actions(self,player):
+    def actions(self, jogador):
         if self.status == 'ataque':
             self.atk_tempo = pygame.time.get_ticks()
+
+            if self.hitbox.colliderect(jogador.hitbox) and self.can_ataque:
+                jogador.vida -= self.dano
+                self.can_ataque = False
+
         elif self.status == 'move':
-            self.direcao = self.get_jogador_distancia_direcao(player)[1]
+            self.direcao = self.get_jogador_distancia_direcao(jogador)[1]
         else:
             self.direcao = pygame.math.Vector2()
 
@@ -95,6 +100,6 @@ class enemy (Entity):
         self.animate()
         self.cooldown()
 
-    def enemy_update(self,player):
-        self.get_status(player)
-        self.actions(player)
+    def enemy_update(self,jogador):
+        self.get_status(jogador)
+        self.actions(jogador)
