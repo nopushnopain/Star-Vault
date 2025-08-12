@@ -9,7 +9,7 @@ class Menu:
         self.estado = 'menu'
 
         # Carrega imagem de fundo
-        self.bg = pygame.image.load('assets/background_menu.png').convert()
+        self.bg = pygame.image.load('assets\Gemini_Generated_Image_r6d3ior6d3ior6d3.png').convert()
         self.bg = pygame.transform.scale(self.bg, (LARGURA, ALTURA))
 
         # Fontes
@@ -61,11 +61,11 @@ class Menu:
             self.janela.blit(self.bg, (0, 0))
 
             # Título
-            self.desenhar_texto_menu("STAR VOULT", (255, 215, 0), LARGURA // 2, ALTURA // 4, self.fonte_titulo, sombra=True)
+            self.desenhar_texto_menu("As Aventuras de Robinho", (255, 215, 0), LARGURA // 2, ALTURA // 6, self.fonte_titulo, sombra=True)
 
             # Botões
-            self.btn_jogar = self.desenhar_botao_menu("JOGAR", ALTURA // 2 - 50, (50, 150, 50), (255, 255, 255))
-            self.btn_sair = self.desenhar_botao_menu("SAIR", ALTURA // 2 + 50, (150, 50, 50), (255, 255, 255))
+            self.btn_jogar = self.desenhar_botao_menu("JOGAR", ALTURA // 2 + 200, (50, 150, 50), (255, 255, 255))
+            self.btn_sair = self.desenhar_botao_menu("SAIR", ALTURA // 2 + 300, (150, 50, 50), (255, 255, 255))
 
             pygame.display.update()
             self.relogio.tick(FPS)

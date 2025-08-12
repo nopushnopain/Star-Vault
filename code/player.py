@@ -10,8 +10,9 @@ class Jogador(pygame.sprite.Sprite):
         # imagem inicial (sprite base)
         self.image = pygame.image.load(r"graficos/protagonista/Idle_baixo/b44f8b4d-c668-4adf-af21-1d2e94f6e5a6.png")
         self.rect = self.image.get_rect(topleft=posicao)  # posição inicial
+
         # Ajusta hitbox para ficar menor, por exemplo, reduzindo largura e altura
-        self.hitbox = self.rect.inflate(-50, -50)  # diminui 20px na largura e 40px na altura
+        self.hitbox = self.rect.inflate(-60, -60)  # diminui 60px na largura e 60px na altura
                
         # animações
         self.importar_sprites_personagem()
@@ -29,7 +30,7 @@ class Jogador(pygame.sprite.Sprite):
         self.tempo_inicio_ataque = None
         
         #vida
-        self.vida = 3
+        self.vida = 4
         self.ataque = 10  # dano de ataque
 
         # colisões
@@ -38,15 +39,8 @@ class Jogador(pygame.sprite.Sprite):
         #sons
         self.som_golpe = pygame.mixer.Sound(r"assets/sword-sound-260274.mp3")
         self.som_golpe.set_volume(0.4)
-        
-    # Aplicação dos efeitos dos Itens 
-    def aplicar_efeito(self, item):
-        if item.tipo == "vida":
-            self.vida += 1
-        elif item.tipo == "velocidade":
-            self.velocidade += 3  #balanciamento
-        elif item.tipo == "ataque":
-            self.ataque += 5 #balanciamento
+
+        self.debug_ataque = False
 
     # carrega todos os sprites do personagem para animação
     def importar_sprites_personagem(self):
@@ -129,6 +123,8 @@ class Jogador(pygame.sprite.Sprite):
 
     # evita sobreposição com obstáculos
     def verificar_colisao(self, direcao):
+
+        #Colisao com os Blocos
         if direcao == "horizontal":
             for sprites in self.sprites_colisao:
                 if sprites.rect.colliderect(self.hitbox):
@@ -143,7 +139,45 @@ class Jogador(pygame.sprite.Sprite):
                     if self.direcao.y > 0: #colisao ao mover para baixo
                         self.hitbox.bottom = sprites.rect.top
                     if self.direcao.y < 0: #colisao ao mover para cima
+       
                         self.hitbox.top = sprites.rect.bottom
+    
+    # Aplicação dos efeitos dos Itens 
+    def aplicar_efeito(self, item):
+        if item.tipo == "vida":
+            self.vida += 1
+        elif item.tipo == "velocidade":
+            self.velocidade += 1  #balanciamento
+        elif item.tipo == "ataque":
+            self.ataque += 2 #balanciamento          
+
+    #Interaçao de Ataque com inimigos
+    def atacar(self, inimigos):
+        if self.atacando:
+            hitbox_ataque = self.hitbox.copy()
+
+            #aumentar o range de ataque para onde o personagem olha
+            if "baixo" in self.estado:
+                hitbox_ataque.y += 40
+            
+            elif "cima" in self.estado:
+                hitbox_ataque.y -= 40
+            
+            elif "direita" in self.estado:
+                hitbox_ataque.x += 40
+            
+            elif "esquerda" in self.estado:
+                hitbox_ataque.x -= 40
+            
+            hitbox_ataque.inflate_ip(20, 20) #aumentar range lateral
+
+            for inimigo in inimigos:
+                if hitbox_ataque.colliderect(inimigo.hitbox):
+                    inimigo.vida -= self.ataque
+                    if inimigo.vida <= 0:
+                        inimigo.kill()
+                    self.debug_ataque = True
+  
 
     # controla animação do personagem
     def animar(self):
