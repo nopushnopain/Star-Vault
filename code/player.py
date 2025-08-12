@@ -17,7 +17,7 @@ class Jogador(pygame.sprite.Sprite):
         self.importar_sprites_personagem()
         self.estado = "Idle_baixo"
         self.frame_indice = 0
-        self.velocidade_animacao = 0.17
+        self.velocidade_animacao = 0.12
        
         # movimento
         self.direcao = pygame.math.Vector2()  # armazena x,y
@@ -27,9 +27,21 @@ class Jogador(pygame.sprite.Sprite):
         self.atacando = False
         self.tempo_recarga_ataque = 500  # ms
         self.tempo_inicio_ataque = None
+        
+        #vida
+        self.vida = 3
+        self.ataque = 10  # dano de ataque
 
         # colisões
         self.sprites_colisao = sprites_colisao
+    # Aplicação dos efeitos dos Itens 
+    def aplicar_efeito(self, item):
+        if item.tipo == "vida":
+            self.vida += 1
+        elif item.tipo == "velocidade":
+            self.velocidade += 3  #balanciamento
+        elif item.tipo == "ataque":
+            self.ataque += 5 #balanciamento
 
         #sons
         self.som_golpe = pygame.mixer.Sound(r"assets\sword-sound-260274.mp3")
