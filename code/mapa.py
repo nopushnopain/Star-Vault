@@ -5,6 +5,7 @@ from player import Jogador
 from settings import * 
 from suporte import *  
 from random import choice
+from inimigo import enemy
 
 class Mapa:
     def __init__(self):
@@ -23,12 +24,14 @@ class Mapa:
         layouts = {
             'limite': import_csv_layout('mapa_csv/mapa_blocoschao.csv'),
             'grama': import_csv_layout('mapa_csv/mapa_grama.csv'),
-            'objetos': import_csv_layout('mapa_csv/mapa_objetos.csv')
+            'objetos': import_csv_layout('mapa_csv/mapa_objetos.csv'),
+            'inimigos': import_csv_layout('mapa_csv/mapa_inimigos.csv')
         }
         # imagens do mapa
         graficos = {
             'grama': importa_pasta('graficos/grama'),
-            'objetos': importa_pasta('graficos/objetos')
+            'objetos': importa_pasta('graficos/objetos'),
+
         }
         # geração de elementos do mapa
         for tipo, layout in layouts.items():
@@ -45,7 +48,11 @@ class Mapa:
                         elif tipo == 'objetos':
                             superficie_obj = graficos['objetos'][int(valor)]
                             Ladrilho((x, y), [self.sprites_visiveis, self.sprites_colisao], 'objetos', superficie_obj)
-        
+                        elif tipo == 'inimigos':
+                            if valor == '390' or valor == '391' or valor == '392' or valor == '393':
+                                nome_inimigo = 'Blue'
+                            enemy(nome_inimigo,(x, y), [self.sprites_visiveis], self.sprites_colisao,)
+
         # adiciona jogador
         self.jogador = Jogador((2000, 1350), [self.sprites_visiveis], self.sprites_colisao)                        
     
@@ -53,6 +60,8 @@ class Mapa:
         # atualiza e desenha o mapa
         self.sprites_visiveis.desenhar_com_camera(self.jogador)
         self.sprites_visiveis.update()
+        self.sprites_visiveis.enemy_update(self.jogador)
+
 
 class GrupoCamera(pygame.sprite.Group):
     def __init__(self):
@@ -79,3 +88,8 @@ class GrupoCamera(pygame.sprite.Group):
         for sprite in sorted(self.sprites(), key=lambda s: s.rect.centery):
             pos_sprite = sprite.rect.topleft - self.deslocamento
             self.superficie_display.blit(sprite.image, pos_sprite)
+
+    def enemy_update(self,player):
+        inimigo_sprites = [sprite for sprite in self.sprites() if hasattr(sprite,'sprite_type') and sprite.sprite_type == 'inimigo']
+        for inimigo in inimigo_sprites:
+            inimigo.enemy_update(player)
