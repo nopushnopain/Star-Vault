@@ -177,8 +177,6 @@ class Jogador(pygame.sprite.Sprite):
                     if inimigo.vida <= 0:
                         inimigo.kill()
                     self.debug_ataque = True
-        
-        
   
 
     # controla animação do personagem

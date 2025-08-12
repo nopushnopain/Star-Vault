@@ -22,6 +22,10 @@ class Jogo:
         
         self.janela = pygame.display.set_mode((LARGURA, ALTURA))
         self.relogio = pygame.time.Clock()
+        
+        #Musica coletavel
+        self.musica_coletavel = pygame.mixer.Sound(r"assets\coletou.wav")
+        self.musica_coletavel.set_volume(0.3)
 
         # Instancia menus e interface
         self.menu = Menu(self.janela, self.relogio)
@@ -78,9 +82,10 @@ class Jogo:
                 self.mapa_jogo.run()
                 self.interface.desenhar()
 
-                #colisao com os items
+                #colisao com os items - colocar em uma classe
                 colisoes = pygame.sprite.spritecollide(self.jogador, self.itens, True)
                 for item in colisoes:
+                    self.musica_coletavel.play()
                     self.jogador.aplicar_efeito(item)
                     if item.tipo == "vida":
                         self.interface.atualizar_vida(self.jogador.vida)
