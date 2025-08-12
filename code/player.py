@@ -2,138 +2,150 @@ import pygame
 from settings import *
 from support import import_folder
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstaculo_sprite):
-        super().__init__(groups) 
-        self.image = pygame.image.load(r"graficos\Protagonista\Idle_baixo\a09ee047-069d-405f-8f4f-4f1c36b4d10a.png")
-        self.rect = self.image.get_rect(topleft = pos) #rect lida com posicao e colisao de sprites
+#=======
+class Jogador(pygame.sprite.Sprite):
+    def __init__(self, posicao, grupos, sprites_colisao):
+        super().__init__(grupos) 
+
+        # imagem inicial (sprite base)
+        self.image = pygame.image.load(r"graficos\protagonista\Idle_baixo\b44f8b4d-c668-4adf-af21-1d2e94f6e5a6.png")
+        self.rect = self.image.get_rect(topleft=posicao)  # posição inicial
         # Ajusta hitbox para ficar menor, por exemplo, reduzindo largura e altura
-        self.hitbox = self.rect.inflate(-10, -10)  # diminui 20px na largura e 40px na altura
-
-        #graficos
-        self.import_player_assets()
-        self.status = "Idle_baixo"
-        self.indice_frame = 0
-        self.animation_speed = 0.15
-        #movimento
-        self.direction = pygame.math.Vector2() #armazena as pos x,y
-        self.speed = 5
+        self.hitbox = self.rect.inflate(-50, -50)  # diminui 20px na largura e 40px na altura
+               
+        # animações
+        self.importar_sprites_personagem()
+        self.estado = "Idle_baixo"
+        self.frame_indice = 0
+        self.velocidade_animacao = 0.17
+       
+        # movimento
+        self.direcao = pygame.math.Vector2()  # armazena x,y
+        self.velocidade = 5
+       
+        # ataque
         self.atacando = False
-        self.atk_cooldown = 500
-        self.atk_tempo = None
+        self.tempo_recarga_ataque = 500  # ms
+        self.tempo_inicio_ataque = None
 
-        self.obstacle_sprites = obstaculo_sprite
+        # colisões
+        self.sprites_colisao = sprites_colisao
 
-    def import_player_assets(self):
-        caminho_protag = r"graficos\Protagonista"
+        #sons
+        self.som_golpe = pygame.mixer.Sound(r"assets\sword-sound-260274.mp3")
+        self.som_golpe.set_volume(0.4)
 
-        self.animacoes = {"Andar_cima": [], "Andar_baixo": [], "Andar_esquerda": [], "Andar_direita": [],
-                          "Atacar_cima": [], "Atacar_baixo": [], "Atacar_esquerda": [], "Atacar_direita": [],
-                          "Idle_cima": [], "Idle_baixo": [], "Idle_direita": [], "Idle_esquerda": []}
+    # carrega todos os sprites do personagem para animação
+    def importar_sprites_personagem(self):
+        caminho_base = r"graficos/protagonista"
+        self.animacoes = {
+            "Andar_cima": [], "Andar_baixo": [], "Andar_esquerda": [], "Andar_direita": [],
+            "Atacar_cima": [], "Atacar_baixo": [], "Atacar_esquerda": [], "Atacar_direita": [],
+            "Idle_cima": [], "Idle_baixo": [], "Idle_direita": [], "Idle_esquerda": []
+        }
+        for nome_animacao in self.animacoes:
+            caminho = f"{caminho_base}/{nome_animacao}"
+            self.animacoes[nome_animacao] = import_folder(caminho, 1.5)
 
-        for animacao in self.animacoes.keys():
-            caminho = caminho_protag + "/" + animacao
-            self.animacoes[animacao] = import_folder(caminho, 1.5)
 
-    def get_status(self):
+    # gerencia mudança de estado do personagem
+    def atualizar_estado(self):
+        # parado
+        if self.direcao.x == 0 and self.direcao.y == 0:
+            if "Idle" not in self.estado and "Atacar" not in self.estado:
+                self.estado = self.estado.replace("Andar", "Idle")
+            elif "Atacar" in self.estado:
+                self.estado = self.estado.replace("Atacar", "Idle")
 
-        #idle
-        if self.direction.x == 0 and self.direction.y == 0:
-            if not "Idle" in self.status:
-                if not "Atacar" in self.status:
-                    self.status = self.status.replace("Andar", "Idle")
-                else:
-                    self.status = self.status.replace("Atacar", "Idle")
-        #Ataque
-        if self.atacando == True:
-            self.direction.x = 0
-            self.direction.y = 0
-            if not "Atacar" in self.status:
-                if "Idle" in self.status:
-                    self.status = self.status.replace("Idle", "Atacar")
-                elif "Andar" in self.status:
-                    self.status = self.status.replace("Andar", "Atacar")   
-
+        # atacando
+        if self.atacando:
+            self.direcao.x = 0
+            self.direcao.y = 0
+            if "Atacar" not in self.estado:
+                self.estado = self.estado.replace("Idle", "Atacar") if "Idle" in self.estado else self.estado.replace("Andar", "Atacar")
         else:
-            if "Atacar" in self.status:
-             self.status = self.status.replace("Atacar_", " ")     
+            if "Atacar" in self.estado:
+                self.estado = self.estado.replace("Atacar_", " ")
 
-    def input(self):
-        keys = pygame.key.get_pressed()
+    # captura teclas pressionadas
+    def capturar_input(self):
+        teclas = pygame.key.get_pressed()
 
         if not self.atacando:
-            if keys[pygame.K_UP]:
-                self.direction.y = -1
-                self.status = "Andar_cima"
-            elif keys[pygame.K_DOWN]:
-                self.direction.y = 1
-                self.status = "Andar_baixo"
+            # movimento vertical
+            if teclas[pygame.K_UP]:
+                self.direcao.y = -1
+                self.estado = "Andar_cima"
+            elif teclas[pygame.K_DOWN]:
+                self.direcao.y = 1
+                self.estado = "Andar_baixo"
             else:
-                self.direction.y = 0
+                self.direcao.y = 0
             
-            if keys[pygame.K_RIGHT]:
-                self.direction.x = 1
-                self.status = "Andar_direita"
-            elif keys[pygame.K_LEFT]:
-                self.direction.x = -1
-                self.status = "Andar_esquerda"
+            # movimento horizontal
+            if teclas[pygame.K_RIGHT]:
+                self.direcao.x = 1
+                self.estado = "Andar_direita"
+            elif teclas[pygame.K_LEFT]:
+                self.direcao.x = -1
+                self.estado = "Andar_esquerda"
             else:
-                self.direction.x = 0
+                self.direcao.x = 0
         
-        #ataque
-        if keys[pygame.K_SPACE] and self.atacando == False:
+        # ataque
+        if teclas[pygame.K_SPACE] and not self.atacando:
             self.atacando = True
-            self.atk_tempo = pygame.time.get_ticks()
-            print("Ataque")
+            self.tempo_inicio_ataque = pygame.time.get_ticks()
+            self.som_golpe.play()
 
-    def cooldowns(self):
-        tempo_atual = pygame.time.get_ticks()
+    # gerencia tempo de recarga das ações
+    def gerenciar_cooldowns(self):
+        agora = pygame.time.get_ticks()
+        if self.atacando and (agora - self.tempo_inicio_ataque >= self.tempo_recarga_ataque):
+            self.atacando = False
+    
+    # move o jogador e verifica colisões
+    def mover(self, velocidade):
+        if self.direcao.magnitude() != 0:
+            self.direcao = self.direcao.normalize()
 
-        if self.atacando:
-            if tempo_atual - self.atk_tempo >= self.atk_cooldown:
-                self.atacando = False   
+        self.hitbox.x += self.direcao.x*velocidade
+        self.verificar_colisao("horizontal")
+        self.hitbox.y += self.direcao.y*velocidade
+        self.verificar_colisao("vertical")
 
-    def move(self, speed):
-        if self.direction.magnitude() != 0:
-            self.direction = self.direction.normalize()
-
-        self.hitbox.x += self.direction.x*speed
-        self.collision("horizontal")
-        self.hitbox.y += self.direction.y*speed
-        self.collision("vertical")
-
-    def collision(self, direction):
-        if direction == "horizontal":
-            for sprites in self.obstacle_sprites:
+    # evita sobreposição com obstáculos
+    def verificar_colisao(self, direcao):
+        if direcao == "horizontal":
+            for sprites in self.sprites_colisao:
                 if sprites.rect.colliderect(self.hitbox):
-                    if self.direction.x > 0: #colisao ao mover para a direita
+                    if self.direcao.x > 0: #colisao ao mover para a direita
                         self.hitbox.right = sprites.rect.left
-                    if self.direction.x < 0: #colisao ao mover para a esquerda
+                    if self.direcao.x < 0: #colisao ao mover para a esquerda
                         self.hitbox.left = sprites.rect.right
                     
-        if direction == "vertical":
-            for sprites in self.obstacle_sprites:
+        if direcao == "vertical":
+            for sprites in self.sprites_colisao:
                 if sprites.rect.colliderect(self.hitbox):
-                    if self.direction.y > 0: #colisao ao mover para baixo
+                    if self.direcao.y > 0: #colisao ao mover para baixo
                         self.hitbox.bottom = sprites.rect.top
-                    if self.direction.y < 0: #colisao ao mover para cima
+                    if self.direcao.y < 0: #colisao ao mover para cima
                         self.hitbox.top = sprites.rect.bottom
 
-    def animate(self):
-        animacao = self.animacoes[self.status]
+    # controla animação do personagem
+    def animar(self):
+        frames = self.animacoes[self.estado]
+        self.frame_indice += self.velocidade_animacao
+        if self.frame_indice >= len(frames):
+            self.frame_indice = 0
+        
+        self.image = frames[int(self.frame_indice)]
+        self.rect = self.image.get_rect(center=self.hitbox.center)
 
-        #loop pelo indice de frame
-        self.indice_frame += self.animation_speed
-        if self.indice_frame >= len(animacao):
-            self.indice_frame = 0
-    
-        #setar imagem
-        self.image = animacao[int(self.indice_frame)]
-        self.rect = self.image.get_rect(center = self.hitbox.center)
-
+    # atualização por frame
     def update(self): 
-        self.input()
-        self.cooldowns()
-        self.get_status()
-        self.animate()
-        self.move(self.speed)
+        self.capturar_input()
+        self.gerenciar_cooldowns()
+        self.atualizar_estado()
+        self.animar()
+        self.mover(self.velocidade)
