@@ -22,10 +22,9 @@ from consumivel import Itens  # classe para itens consumíveis
 class Jogo:
     def __init__(self):
         pygame.init()
-#<<<<<<< HEAD
         pygame.mixer.init()
-
         pygame.display.set_caption("Star Vault")
+        
         self.janela = pygame.display.set_mode((LARGURA, ALTURA))
         self.relogio = pygame.time.Clock()
 
