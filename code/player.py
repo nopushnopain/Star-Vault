@@ -141,9 +141,6 @@ class Jogador(pygame.sprite.Sprite):
                     if self.direcao.y < 0: #colisao ao mover para cima
        
                         self.hitbox.top = sprites.rect.bottom
-    #Passa para o jogador os itens de interação    
-    def grupo_items(self, items):
-        self.items = items
     
     # Aplicação dos efeitos dos Itens 
     def aplicar_efeito(self, item):
@@ -152,20 +149,7 @@ class Jogador(pygame.sprite.Sprite):
         elif item.tipo == "velocidade":
             self.velocidade += 1  #balanciamento
         elif item.tipo == "ataque":
-            self.ataque += 2 #balanciamento
-            
-    #checa colisao com os itens
-    def checar_colisao_itens(self):
-        if self.items:
-            colisoes = []
-
-            for item in self.items:
-                if self.hitbox.colliderect(item.rect):
-                    colisoes.append(item)
-            
-            for item in colisoes:
-                item.kill()
-                self.aplicar_efeito(item)
+            self.ataque += 2 #balanciamento          
 
     #Interaçao de Ataque com inimigos
     def atacar(self, inimigos):
@@ -193,6 +177,8 @@ class Jogador(pygame.sprite.Sprite):
                     if inimigo.vida <= 0:
                         inimigo.kill()
                     self.debug_ataque = True
+        
+        
   
 
     # controla animação do personagem
