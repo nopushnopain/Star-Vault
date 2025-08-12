@@ -64,8 +64,8 @@ class Menu:
             self.desenhar_texto_menu("As Aventuras de Robinho", (255, 215, 0), LARGURA // 2, ALTURA // 6, self.fonte_titulo, sombra=True)
 
             # Botões
-            self.btn_jogar = self.desenhar_botao_menu("JOGAR", ALTURA // 2 + 100, (50, 150, 50), (255, 255, 255))
-            self.btn_sair = self.desenhar_botao_menu("SAIR", ALTURA // 2 + 200, (150, 50, 50), (255, 255, 255))
+            self.btn_jogar = self.desenhar_botao_menu("JOGAR", ALTURA // 2 + 200, (50, 150, 50), (255, 255, 255))
+            self.btn_sair = self.desenhar_botao_menu("SAIR", ALTURA // 2 + 300, (150, 50, 50), (255, 255, 255))
 
             pygame.display.update()
             self.relogio.tick(FPS)
