@@ -8,7 +8,7 @@ class Jogador(pygame.sprite.Sprite):
         super().__init__(grupos) 
 
         # imagem inicial (sprite base)
-        self.image = pygame.image.load(r"graficos\protagonista\Idle_baixo\b44f8b4d-c668-4adf-af21-1d2e94f6e5a6.png")
+        self.image = pygame.image.load(r"graficos/protagonista/Idle_baixo/b44f8b4d-c668-4adf-af21-1d2e94f6e5a6.png")
         self.rect = self.image.get_rect(topleft=posicao)  # posição inicial
         # Ajusta hitbox para ficar menor, por exemplo, reduzindo largura e altura
         self.hitbox = self.rect.inflate(-50, -50)  # diminui 20px na largura e 40px na altura
@@ -36,7 +36,7 @@ class Jogador(pygame.sprite.Sprite):
         self.sprites_colisao = sprites_colisao
 
         #sons
-        self.som_golpe = pygame.mixer.Sound(r"assets\sword-sound-260274.mp3")
+        self.som_golpe = pygame.mixer.Sound(r"assets/sword-sound-260274.mp3")
         self.som_golpe.set_volume(0.4)
         
     # Aplicação dos efeitos dos Itens 
