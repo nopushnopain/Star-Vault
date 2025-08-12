@@ -34,6 +34,11 @@ class Jogador(pygame.sprite.Sprite):
 
         # colisões
         self.sprites_colisao = sprites_colisao
+
+        #sons
+        self.som_golpe = pygame.mixer.Sound(r"assets\sword-sound-260274.mp3")
+        self.som_golpe.set_volume(0.4)
+        
     # Aplicação dos efeitos dos Itens 
     def aplicar_efeito(self, item):
         if item.tipo == "vida":
@@ -42,10 +47,6 @@ class Jogador(pygame.sprite.Sprite):
             self.velocidade += 3  #balanciamento
         elif item.tipo == "ataque":
             self.ataque += 5 #balanciamento
-
-        #sons
-        self.som_golpe = pygame.mixer.Sound(r"assets\sword-sound-260274.mp3")
-        self.som_golpe.set_volume(0.4)
 
     # carrega todos os sprites do personagem para animação
     def importar_sprites_personagem(self):
