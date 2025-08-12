@@ -87,8 +87,8 @@ class Jogo:
                 for item in colisoes:
                     self.musica_coletavel.play()
                     self.jogador.aplicar_efeito(item)
-                    if item.tipo == "vida":
-                        self.interface.atualizar_vida(self.jogador.vida)
+                    
+                self.interface.atualizar_vida(self.jogador.vida)
 
                 #debug atributos 
                 debug(f"Vida: {getattr(self.jogador, 'vida', 0)}", 10, LARGURA - 10)
