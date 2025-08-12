@@ -2,12 +2,13 @@ import pygame
 from settings import *
 from support import import_folder
 
+#=======
 class Jogador(pygame.sprite.Sprite):
     def __init__(self, posicao, grupos, sprites_colisao):
         super().__init__(grupos) 
 
         # imagem inicial (sprite base)
-        self.image = pygame.image.load(r"graficos/protagonista/Idle_baixo/a09ee047-069d-405f-8f4f-4f1c36b4d10a.png")
+        self.image = pygame.image.load(r"graficos/protagonista/Idle_baixo/b44f8b4d-c668-4adf-af21-1d2e94f6e5a6.png")
         self.rect = self.image.get_rect(topleft=posicao)  # posição inicial
         # Ajusta hitbox para ficar menor, por exemplo, reduzindo largura e altura
         self.hitbox = self.rect.inflate(-50, -50)  # diminui 20px na largura e 40px na altura
@@ -26,13 +27,30 @@ class Jogador(pygame.sprite.Sprite):
         self.atacando = False
         self.tempo_recarga_ataque = 500  # ms
         self.tempo_inicio_ataque = None
+        
+        #vida
+        self.vida = 3
+        self.ataque = 10  # dano de ataque
 
         # colisões
         self.sprites_colisao = sprites_colisao
 
+        #sons
+        self.som_golpe = pygame.mixer.Sound(r"assets/sword-sound-260274.mp3")
+        self.som_golpe.set_volume(0.4)
+        
+    # Aplicação dos efeitos dos Itens 
+    def aplicar_efeito(self, item):
+        if item.tipo == "vida":
+            self.vida += 1
+        elif item.tipo == "velocidade":
+            self.velocidade += 3  #balanciamento
+        elif item.tipo == "ataque":
+            self.ataque += 5 #balanciamento
+
     # carrega todos os sprites do personagem para animação
     def importar_sprites_personagem(self):
-        caminho_base = r"graficos\protagonista"
+        caminho_base = r"graficos/protagonista"
         self.animacoes = {
             "Andar_cima": [], "Andar_baixo": [], "Andar_esquerda": [], "Andar_direita": [],
             "Atacar_cima": [], "Atacar_baixo": [], "Atacar_esquerda": [], "Atacar_direita": [],
@@ -41,6 +59,7 @@ class Jogador(pygame.sprite.Sprite):
         for nome_animacao in self.animacoes:
             caminho = f"{caminho_base}/{nome_animacao}"
             self.animacoes[nome_animacao] = import_folder(caminho, 1.5)
+
 
     # gerencia mudança de estado do personagem
     def atualizar_estado(self):
@@ -90,7 +109,7 @@ class Jogador(pygame.sprite.Sprite):
         if teclas[pygame.K_SPACE] and not self.atacando:
             self.atacando = True
             self.tempo_inicio_ataque = pygame.time.get_ticks()
-            print("Ataque")
+            self.som_golpe.play()
 
     # gerencia tempo de recarga das ações
     def gerenciar_cooldowns(self):
