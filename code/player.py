@@ -30,7 +30,7 @@ class Jogador(pygame.sprite.Sprite):
         self.tempo_inicio_ataque = None
         
         #vida
-        self.vida = 10000
+        self.vida = 4
         self.ataque = 1  # dano de ataque
 
         # colisões
