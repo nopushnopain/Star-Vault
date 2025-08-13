@@ -48,7 +48,7 @@ class Jogador(pygame.sprite.Sprite):
         self.animacoes = {
             "Andar_cima": [], "Andar_baixo": [], "Andar_esquerda": [], "Andar_direita": [],
             "Atacar_cima": [], "Atacar_baixo": [], "Atacar_esquerda": [], "Atacar_direita": [],
-            "Idle_cima": [], "Idle_baixo": [], "Idle_direita": [], "Idle_esquerda": [], "Morte": []
+            "Idle_cima": [], "Idle_baixo": [], "Idle_direita": [], "Idle_esquerda": []
         }
         for nome_animacao in self.animacoes:
             caminho = f"{caminho_base}/{nome_animacao}"
@@ -73,41 +73,37 @@ class Jogador(pygame.sprite.Sprite):
         else:
             if "Atacar" in self.estado:
                 self.estado = self.estado.replace("Atacar_", " ")
-        
-        #Morte
-        if self.vida <= 0:
-            self.estado = "Morte"
 
     # captura teclas pressionadas
     def capturar_input(self):
         teclas = pygame.key.get_pressed()
-        if self.estado != "Morte":
-            if not self.atacando:
-                # movimento vertical
-                if teclas[pygame.K_UP]:
-                    self.direcao.y = -1
-                    self.estado = "Andar_cima"
-                elif teclas[pygame.K_DOWN]:
-                    self.direcao.y = 1
-                    self.estado = "Andar_baixo"
-                else:
-                    self.direcao.y = 0
-                
-                # movimento horizontal
-                if teclas[pygame.K_RIGHT]:
-                    self.direcao.x = 1
-                    self.estado = "Andar_direita"
-                elif teclas[pygame.K_LEFT]:
-                    self.direcao.x = -1
-                    self.estado = "Andar_esquerda"
-                else:
-                    self.direcao.x = 0
+
+        if not self.atacando:
+            # movimento vertical
+            if teclas[pygame.K_UP]:
+                self.direcao.y = -1
+                self.estado = "Andar_cima"
+            elif teclas[pygame.K_DOWN]:
+                self.direcao.y = 1
+                self.estado = "Andar_baixo"
+            else:
+                self.direcao.y = 0
             
-            # ataque
-            if teclas[pygame.K_SPACE] and not self.atacando:
-                self.atacando = True
-                self.tempo_inicio_ataque = pygame.time.get_ticks()
-                self.som_golpe.play()
+            # movimento horizontal
+            if teclas[pygame.K_RIGHT]:
+                self.direcao.x = 1
+                self.estado = "Andar_direita"
+            elif teclas[pygame.K_LEFT]:
+                self.direcao.x = -1
+                self.estado = "Andar_esquerda"
+            else:
+                self.direcao.x = 0
+        
+        # ataque
+        if teclas[pygame.K_SPACE] and not self.atacando:
+            self.atacando = True
+            self.tempo_inicio_ataque = pygame.time.get_ticks()
+            self.som_golpe.play()
 
     # gerencia tempo de recarga das ações
     def gerenciar_cooldowns(self):
@@ -173,7 +169,7 @@ class Jogador(pygame.sprite.Sprite):
             elif "esquerda" in self.estado:
                 hitbox_ataque.x -= 50
             
-            hitbox_ataque.inflate_ip(40, 40) #aumentar range lateral
+            hitbox_ataque.inflate_ip(20, 20) #aumentar range lateral
 
             for inimigo in inimigos:
                 if hitbox_ataque.colliderect(inimigo.hitbox):
@@ -187,18 +183,10 @@ class Jogador(pygame.sprite.Sprite):
     def animar(self):
         frames = self.animacoes[self.estado]
         self.frame_indice += self.velocidade_animacao
-        if self.estado == "Morte":
-            if self.frame_indice >= len(frames):
-                self.frame_indice = len(frames) - 1       
-        else:
-            if self.frame_indice >= len(frames):
-                self.frame_indice = 0
-
         if self.frame_indice >= len(frames):
             if self.estado == 'Atacar':
                 self.debug_ataque = False
             self.frame_indice = 0
-
         
         self.image = frames[int(self.frame_indice)]
         self.rect = self.image.get_rect(center=self.hitbox.center)

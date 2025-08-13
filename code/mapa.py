@@ -89,8 +89,7 @@ class Mapa:
             
             elif "esquerda" in self.jogador.estado:
                 hitbox_ataque.x -= 50
-            
-
+                
             # Para cada sprite "atacável" (incluindo a grama)
             for sprite_alvo in self.sprite_atacavel:
                 # Verifica se o retângulo de ataque do jogador colide com o sprite "atacável"

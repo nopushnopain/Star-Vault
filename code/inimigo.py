@@ -14,8 +14,8 @@ class enemy (Entity):
         self.image = self.animacoes[self.status][self.indice_frame]
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)  
-        self.som_hit = pygame.mixer.Sound(r"assets\desperate-shout-106691.mp3")
-        self.som_hit.set_volume(0.5)
+        self.som_dano = pygame.mixer.Sound("assets\Dano.mp3")
+        self.som_dano.set_volume(0.4)
 
         #movimento
 
@@ -70,7 +70,7 @@ class enemy (Entity):
             self.atk_tempo = pygame.time.get_ticks()
 
             if self.hitbox.colliderect(jogador.hitbox) and self.can_ataque:
-                self.som_hit.play()
+                self.som_dano.play()
                 jogador.vida -= self.dano
                 self.can_ataque = False
 
