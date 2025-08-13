@@ -46,6 +46,10 @@ class Jogo:
         self.itens = pygame.sprite.Group()
         self.jogador = self.mapa_jogo.jogador
 
+        if hasattr(self.mapa_jogo, 'grupo_inimigos'):
+            for inim in self.mapa_jogo.grupo_inimigos:
+                inim.grupo_itens = self.itens
+                inim.sprites_visiveis = self.mapa_jogo.sprites_visiveis
         # Cria os itens aleatórios no mapa, adicionando nos grupos
         cria_itens_aleatorios(self.jogador, self.mapa_jogo.sprites_visiveis, self.itens, qntd=6)
 
