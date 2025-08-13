@@ -100,7 +100,6 @@ class Jogo:
                 pygame.display.update()  # atualiza tela
                 self.relogio.tick(FPS)  # limita FPS 
                  
-#>>>>>>> consumiveis
 if __name__ == '__main__':
     jogo = Jogo()
     jogo.executar()
