@@ -9,7 +9,7 @@ class Menu:
         self.estado = 'menu'
 
         # Carrega imagem de fundo
-        self.bg = pygame.image.load('assets\Gemini_Generated_Image_r6d3ior6d3ior6d3.png').convert()
+        self.bg = pygame.image.load('assets/Gemini_Generated_Image_r6d3ior6d3ior6d3.png').convert()
         self.bg = pygame.transform.scale(self.bg, (LARGURA, ALTURA))
 
         # Fontes

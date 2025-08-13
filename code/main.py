@@ -24,7 +24,7 @@ class Jogo:
         self.relogio = pygame.time.Clock()
         
         #Musica coletavel
-        self.musica_coletavel = pygame.mixer.Sound(r"assets\coletou.wav")
+        self.musica_coletavel = pygame.mixer.Sound(r"assets/coletou.wav")
         self.musica_coletavel.set_volume(0.3)
 
         # Instancia menus e interface
@@ -53,8 +53,67 @@ class Jogo:
         for item in self.itens:
             self.mapa_jogo.sprites_visiveis.add(item)
 
+    def mostrar_game_over(self):
+        tocar_musica('assets/game_over_sound.mp3', volume=0.5, loop=-1)
+        
+       
+        fonte_titulo = pygame.font.SysFont('Comic Sans MS', 70, bold=True)
+        fonte_opcao = pygame.font.SysFont('Comic Sans MS', 40)
+        
+        opcoes = ["Voltar ao Menu", "Sair"]
+        botoes = []
+        espacamento = 80 
 
+        while True:
+            self.janela.fill("black")
+            texto = fonte_titulo.render("GAME OVER", True, (255, 0, 0))
+            sombra = fonte_titulo.render("GAME OVER", True, (100, 0, 0))
+            texto_rect = texto.get_rect(center=(LARGURA // 2, ALTURA // 3))
 
+            # sombreamento do texto
+            self.janela.blit(sombra, (texto_rect.x + 3, texto_rect.y + 3))
+            self.janela.blit(texto, texto_rect)
+
+            # botao arredondado
+            mouse_pos = pygame.mouse.get_pos()
+            botoes.clear()
+
+            for i, opcao in enumerate(opcoes):
+                y = ALTURA // 2 + i * espacamento
+                texto_opcao = fonte_opcao.render(opcao, True, (255, 255, 255))
+                rect_opcao = texto_opcao.get_rect(center=(LARGURA // 2, y))
+
+                area_botao = rect_opcao.inflate(40, 20)
+
+                if area_botao.collidepoint(mouse_pos):
+                    cor_fundo = (70, 85, 110)
+                    cor_texto = (0, 0, 0)
+                else:
+                    cor_fundo = (70, 70, 70)
+                    cor_texto = (255, 255, 255)
+
+                # Desenha retângulo arredondado para o botão
+                pygame.draw.rect(self.janela, cor_fundo, area_botao, border_radius=12)
+
+                # Renderiza o texto do botão
+                texto_opcao = fonte_opcao.render(opcao, True, cor_texto)
+                self.janela.blit(texto_opcao, rect_opcao)
+
+                botoes.append((opcao.lower(), area_botao))
+
+            pygame.display.update()
+
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+                    for nome_opcao, rect in botoes:
+                        if rect.collidepoint(evento.pos):
+                            return nome_opcao 
+
+                        
     def executar(self):
         while True:
             for evento in pygame.event.get():
@@ -90,11 +149,22 @@ class Jogo:
                     
                 self.interface.atualizar_vida(self.jogador.vida)
 
+                #verificar se o jogador morreu
+                if self.jogador.vida <= 0:
+                    acao = self.mostrar_game_over()
+                    if acao == 'voltar ao menu':
+                        tocar_musica('assets/musica_menu.mp3')
+                        novo_jogo = Jogo()
+                        novo_jogo.executar()
+                        tocar_musica('assets/musica_menu.mp3')
+                    elif acao == 'sair':
+                        pygame.quit()
+                        sys.exit()
+
                 #debug atributos 
                 debug(f"Vida: {getattr(self.jogador, 'vida', 0)}", 10, LARGURA - 10)
                 debug(f"Ataque: {getattr(self.jogador, 'ataque', 0)}", 30, LARGURA - 10)
                 debug(f"Velocidade: {self.jogador.velocidade}", 50, LARGURA - 10)
-                debug(f"Atacando: {self.jogador.debug_ataque}", 70, LARGURA - 10)
 
                 
                 pygame.display.update()  # atualiza tela
