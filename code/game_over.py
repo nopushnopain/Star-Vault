@@ -2,6 +2,12 @@ import pygame
 import sys
 from settings import LARGURA, ALTURA, FPS
 
+
+def tocar_musica(caminho, volume=0.5, loop=-1):
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load(caminho)
+    pygame.mixer.music.set_volume(volume)
+    pygame.mixer.music.play(loop)
 class GameOver:
     def __init__(self, janela, relogio):
         self.janela = janela
@@ -14,6 +20,7 @@ class GameOver:
         self.espacamento = 80
 
     def mostrar(self):
+        tocar_musica('assets/game_over_sound.mp3', volume=0.5, loop=-1)
         while True:
             self.janela.fill("black")
 
@@ -34,7 +41,6 @@ class GameOver:
                 rect_opcao = texto_opcao.get_rect(center=(LARGURA // 2, y))
                 area_botao = rect_opcao.inflate(40, 20)
 
-                # Hover
                 if area_botao.collidepoint(mouse_pos):
                     cor_fundo = (70, 85, 110)
                     cor_texto = (0, 0, 0)
@@ -51,7 +57,6 @@ class GameOver:
             pygame.display.update()
             self.relogio.tick(FPS)
 
-            # Eventos
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     pygame.quit()
@@ -59,4 +64,4 @@ class GameOver:
                 elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
                     for nome_opcao, area in botoes:
                         if area.collidepoint(evento.pos):
-                            return nome_opcao 
+                            return nome_opcao
