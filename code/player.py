@@ -48,7 +48,7 @@ class Jogador(pygame.sprite.Sprite):
         self.animacoes = {
             "Andar_cima": [], "Andar_baixo": [], "Andar_esquerda": [], "Andar_direita": [],
             "Atacar_cima": [], "Atacar_baixo": [], "Atacar_esquerda": [], "Atacar_direita": [],
-            "Idle_cima": [], "Idle_baixo": [], "Idle_direita": [], "Idle_esquerda": []
+            "Idle_cima": [], "Idle_baixo": [], "Idle_direita": [], "Idle_esquerda": [], "Morte": []
         }
         for nome_animacao in self.animacoes:
             caminho = f"{caminho_base}/{nome_animacao}"
@@ -104,6 +104,10 @@ class Jogador(pygame.sprite.Sprite):
             self.atacando = True
             self.tempo_inicio_ataque = pygame.time.get_ticks()
             self.som_golpe.play()
+
+        #Morte
+        if self.vida <= 0:
+            self.estado = "Morte"
 
     # gerencia tempo de recarga das ações
     def gerenciar_cooldowns(self):
@@ -183,10 +187,12 @@ class Jogador(pygame.sprite.Sprite):
     def animar(self):
         frames = self.animacoes[self.estado]
         self.frame_indice += self.velocidade_animacao
-        if self.frame_indice >= len(frames):
-            if self.estado == 'Atacar':
-                self.debug_ataque = False
-            self.frame_indice = 0
+        if self.estado == "Morte":
+            if self.frame_indice >= len(frames):
+                self.frame_indice = len(frames) - 1       
+        else:
+            if self.frame_indice >= len(frames):
+                self.frame_indice = 0
         
         self.image = frames[int(self.frame_indice)]
         self.rect = self.image.get_rect(center=self.hitbox.center)

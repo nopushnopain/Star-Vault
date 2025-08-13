@@ -3,11 +3,11 @@ import sys
 from settings import LARGURA, ALTURA, FPS
 
 
-def tocar_musica(caminho, volume=0.5, loop=-1):
+def tocar_musica(caminho, volume=0.5):
     pygame.mixer.music.stop()
     pygame.mixer.music.load(caminho)
     pygame.mixer.music.set_volume(volume)
-    pygame.mixer.music.play(loop)
+    pygame.mixer.music.play()
 class GameOver:
     def __init__(self, janela, relogio):
         self.janela = janela
@@ -20,7 +20,8 @@ class GameOver:
         self.espacamento = 80
 
     def mostrar(self):
-        tocar_musica('assets/game_over_sound.mp3', volume=0.5, loop=-1)
+        tocar_musica('assets/game_over_sound.mp3', volume=0.5)
+
         while True:
             self.janela.fill("black")
 

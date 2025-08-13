@@ -92,22 +92,29 @@ class Jogo:
                 self.interface.atualizar_vida(self.jogador.vida)
 
                 #verificar se o jogador morreu
-                if self.jogador.vida <= 0:
-                    game_over = GameOver(self.janela, self.relogio)
-                    acao = game_over.mostrar()
-                    if acao == 'voltar ao menu':
-                        tocar_musica('assets/musica_menu.mp3')
-                        self.menu.estado = 'menu'
-                        self.menu.mostrar_menu()
+                if self.jogador.estado == "Morte":
+                    # registra o tempo da morte do jogador
+                    if not hasattr(self, 'tempo_morte'):
+                        self.tempo_morte = pygame.time.get_ticks()
+                    
+                    # espera 1.5 segundos antes de mostrar Game Over
+                    elif pygame.time.get_ticks() - self.tempo_morte >= 1500:
+                        game_over = GameOver(self.janela, self.relogio)
+                        acao = game_over.mostrar()
 
-                        if self.menu.estado == 'jogo':
-                            tocar_musica('assets/forest.mp3')
-                            novo_jogo = Jogo()
-                            novo_jogo.executar()
+                        if acao == 'voltar ao menu':
+                            tocar_musica('assets/musica_menu.mp3')
+                            self.menu.estado = 'menu'
+                            self.menu.mostrar_menu()
 
-                    elif acao == 'sair':
-                        pygame.quit()
-                        sys.exit()
+                            if self.menu.estado == 'jogo':
+                                tocar_musica('assets/forest.mp3')
+                                novo_jogo = Jogo()
+                                novo_jogo.executar()
+
+                        elif acao == 'sair':
+                            pygame.quit()
+                            sys.exit()
 
                 #debug atributos 
                 debug(f"Vida: {getattr(self.jogador, 'vida', 0)}", 10, LARGURA - 10)
