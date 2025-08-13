@@ -14,7 +14,7 @@ class enemy (Entity):
         self.image = self.animacoes[self.status][self.indice_frame]
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)  
-        self.som_hit = pygame.mixer.Sound(r"assets\Dano.mp3")
+        self.som_hit = pygame.mixer.Sound(r"assets\desperate-shout-106691.mp3")
         self.som_hit.set_volume(0.5)
 
         #movimento
