@@ -83,10 +83,11 @@ class Jogo:
                 self.interface.desenhar()
 
                 #colisao com os items - colocar em uma classe
-                colisoes = pygame.sprite.spritecollide(self.jogador, self.itens, True)
-                for item in colisoes:
-                    self.musica_coletavel.play()
-                    self.jogador.aplicar_efeito(item)
+                for item in self.itens:
+                    if self.jogador.hitbox.colliderect(item.rect):
+                        self.musica_coletavel.play()
+                        self.jogador.aplicar_efeito(item)
+                        item.kill()
                     
                 self.interface.atualizar_vida(self.jogador.vida)
 
