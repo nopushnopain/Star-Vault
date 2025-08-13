@@ -193,6 +193,12 @@ class Jogador(pygame.sprite.Sprite):
         else:
             if self.frame_indice >= len(frames):
                 self.frame_indice = 0
+
+        if self.frame_indice >= len(frames):
+            if self.estado == 'Atacar':
+                self.debug_ataque = False
+            self.frame_indice = 0
+
         
         self.image = frames[int(self.frame_indice)]
         self.rect = self.image.get_rect(center=self.hitbox.center)

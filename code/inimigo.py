@@ -8,7 +8,7 @@ class enemy (Entity):
         #
         super().__init__(groups)
         self.nome_inimigo = nome
-        self.sprite_type = 'inimigo'
+        self.tipo_sprite = 'inimigo'
         self.status = 'idle'
         self.import_sprites_inimigo()
         self.image = self.animacoes[self.status][self.indice_frame]
@@ -103,3 +103,5 @@ class enemy (Entity):
     def enemy_update(self,jogador):
         self.get_status(jogador)
         self.actions(jogador)
+
+    
