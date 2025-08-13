@@ -78,6 +78,19 @@ class Mapa:
             # Expande o retângulo de ataque
             hitbox_ataque.inflate_ip(40, 40)
 
+            if "baixo" in self.jogador.estado:
+                hitbox_ataque.y += 45
+            
+            elif "cima" in self.jogador.estado:
+                hitbox_ataque.y -= 45
+            
+            elif "direita" in self.jogador.estado:
+                hitbox_ataque.x += 50
+            
+            elif "esquerda" in self.jogador.estado:
+                hitbox_ataque.x -= 50
+            
+
             # Para cada sprite "atacável" (incluindo a grama)
             for sprite_alvo in self.sprite_atacavel:
                 # Verifica se o retângulo de ataque do jogador colide com o sprite "atacável"
