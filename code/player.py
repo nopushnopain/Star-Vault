@@ -158,18 +158,21 @@ class Jogador(pygame.sprite.Sprite):
 
             #aumentar o range de ataque para onde o personagem olha
             if "baixo" in self.estado:
-                hitbox_ataque.y += 45
+
+                hitbox_ataque.y += 50
             
             elif "cima" in self.estado:
-                hitbox_ataque.y -= 45
+                hitbox_ataque.y -= 50
+
             
             elif "direita" in self.estado:
                 hitbox_ataque.x += 50
             
             elif "esquerda" in self.estado:
                 hitbox_ataque.x -= 50
-            
-            hitbox_ataque.inflate_ip(20, 20) #aumentar range lateral
+
+
+            hitbox_ataque.inflate_ip(30, 30) #aumentar range lateral
 
             for inimigo in inimigos:
                 if hitbox_ataque.colliderect(inimigo.hitbox):
