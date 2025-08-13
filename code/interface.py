@@ -1,17 +1,16 @@
 import pygame
 
 class Interface:
-    def __init__(self, tela):
+    def __init__(self, tela, vida):
         self.tela = tela
 
         # Vida
-        self.vida_max = 5
-        self.vida_atual = 4
+        self.vida_atual = vida
         self.coracao_img = pygame.image.load("assets/icone_vida.png").convert_alpha()
         self.coracao_img = pygame.transform.scale(self.coracao_img, (32, 32))
 
     def atualizar_vida(self, nova_vida):
-        self.vida_atual = max(0, min(nova_vida, self.vida_max))
+        self.vida_atual = nova_vida
 
     def desenhar(self):
         # Desenhar corações (vida)
