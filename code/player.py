@@ -11,7 +11,7 @@ class Jogador(pygame.sprite.Sprite):
         self.image = pygame.image.load(r"graficos/protagonista/Idle_baixo/b44f8b4d-c668-4adf-af21-1d2e94f6e5a6.png")
         self.rect = self.image.get_rect(topleft=posicao)  # posição inicial
 
-        # Ajusta hitbox para ficar menor, por exemplo, reduzindo largura e altura
+        # ajusta hitbox p/ ficar menor, por exemplo, reduzindo largura e altura
         self.hitbox = self.rect.inflate(-60, -60)  # diminui 60px na largura e 60px na altura
                
         # animações

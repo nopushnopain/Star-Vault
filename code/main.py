@@ -10,7 +10,7 @@ from consumivel import cria_itens_aleatorios
 from game_over import GameOver
 
 def tocar_musica(caminho, volume=0.5, loop=-1):
-    pygame.mixer.music.stop()  # Garante reinício
+    pygame.mixer.music.stop()  # p/ reiniciar o DJ
     pygame.mixer.music.load(caminho)
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play(loop)
