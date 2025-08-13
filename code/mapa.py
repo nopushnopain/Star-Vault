@@ -63,12 +63,16 @@ class Mapa:
 
                         elif tipo == 'inimigos':
 
-                            if coluna == '390' or coluna == '391':
+                            if coluna == '390':
                                 nome_inimigo = 'Blue'
                             elif coluna == '393':
                                  nome_inimigo = 'Goblin'
                             elif coluna == '392':
                                 nome_inimigo = 'Lobisomem'
+                            elif coluna == '391':
+                                nome_inimigo = 'Minotauro'
+                            elif coluna == '396':
+                                nome_inimigo = 'Castor'
                             enemy(nome_inimigo,(x, y), [self.sprites_visiveis], self.sprites_colisao)
 
 

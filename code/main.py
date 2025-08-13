@@ -32,12 +32,12 @@ class Jogo:
         self.pause_menu = PauseMenu(self.janela, self.relogio)
 
         # Toca música do menu e exibe o menu inicial
-        tocar_musica('assets/musica_menu.mp3')
+        #tocar_musica('assets/musica_menu.mp3')
         self.menu.mostrar_menu()
 
         # Se o jogador clicou em "JOGAR"
         if self.menu.estado == 'jogo':
-            tocar_musica('assets/forest.mp3')
+            #tocar_musica('assets/forest.mp3')
             self.mapa_jogo = Mapa()
         else:
             self.mapa_jogo = None
@@ -54,7 +54,7 @@ class Jogo:
             self.mapa_jogo.sprites_visiveis.add(item)
 
     def mostrar_game_over(self):
-        tocar_musica('assets/game_over_sound.mp3', volume=0.5, loop=-1)
+        #tocar_musica('assets/game_over_sound.mp3', volume=0.5, loop=-1)
         
        
         fonte_titulo = pygame.font.SysFont('Comic Sans MS', 70, bold=True)
@@ -126,12 +126,12 @@ class Jogo:
                     acao = self.pause_menu.mostrar_pause_menu()
 
                     if acao == "menu":
-                        tocar_musica('assets/musica_menu.mp3')
+                        #tocar_musica('assets/musica_menu.mp3')
                         self.menu.estado = "menu"
                         self.menu.mostrar_menu()
 
                         if self.menu.estado == 'jogo':
-                            tocar_musica('assets/forest.mp3')
+                            #tocar_musica('assets/forest.mp3')
                             self.mapa_jogo = Mapa()
                     else:
                         pygame.mixer.music.unpause()
@@ -153,10 +153,10 @@ class Jogo:
                 if self.jogador.vida <= 0:
                     acao = self.mostrar_game_over()
                     if acao == 'voltar ao menu':
-                        tocar_musica('assets/musica_menu.mp3')
+                        #tocar_musica('assets/musica_menu.mp3')
                         novo_jogo = Jogo()
                         novo_jogo.executar()
-                        tocar_musica('assets/musica_menu.mp3')
+                        #tocar_musica('assets/musica_menu.mp3')
                     elif acao == 'sair':
                         pygame.quit()
                         sys.exit()
