@@ -58,10 +58,12 @@ class Mapa:
                             Ladrilho((x, y), [self.sprites_visiveis, self.sprites_colisao], 'objetos', superficie_obj)
 
                         elif tipo == 'inimigos':
-                            if valor == '390' or valor == '391' or valor == '393':
+                            if valor == '390' or valor == '391':
                                 nome_inimigo = 'Blue'
+                            elif valor == '393':
+                                 nome_inimigo = 'Goblin'
                             elif valor == '392':
-                                nome_inimigo = 'Troll'
+                                nome_inimigo = 'Lobisomem'
                             enemy(nome_inimigo,(x, y), [self.sprites_visiveis], self.sprites_colisao)
 
         # adiciona jogador

@@ -12,8 +12,10 @@ class enemy (Entity):
         self.status = 'idle'
         self.import_sprites_inimigo()
         self.image = self.animacoes[self.status][self.indice_frame]
+        # if self.nome_inimigo == 'Troll':
+        #     self.image = pygame.transform.scale(self.image, (60, 60))
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(monster_data[self.nome_inimigo]['D1'], monster_data[self.nome_inimigo]['D2'])
+        self.hitbox = self.rect.inflate(0, -10)
 
         #movimento
 
