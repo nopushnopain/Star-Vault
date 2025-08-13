@@ -24,7 +24,7 @@ class Jogo:
         self.relogio = pygame.time.Clock()
         
         #Musica coletavel
-        self.musica_coletavel = pygame.mixer.Sound(r"assets\coletou.wav")
+        self.musica_coletavel = pygame.mixer.Sound(r"assets/coletou.wav")
         self.musica_coletavel.set_volume(0.3)
 
         # Instancia menus e interface
