@@ -18,7 +18,7 @@ class Jogador(pygame.sprite.Sprite):
         self.importar_sprites_personagem()
         self.estado = "Idle_baixo"
         self.frame_indice = 0
-        self.velocidade_animacao = 0.17
+        self.velocidade_animacao = 0.15
        
         # movimento
         self.direcao = pygame.math.Vector2()  # armazena x,y
@@ -26,7 +26,7 @@ class Jogador(pygame.sprite.Sprite):
        
         # ataque
         self.atacando = False
-        self.tempo_recarga_ataque = 500  # ms
+        self.tempo_recarga_ataque = 1000  # ms
         self.tempo_inicio_ataque = None
         
         #vida
@@ -38,9 +38,9 @@ class Jogador(pygame.sprite.Sprite):
 
         #sons
         self.som_golpe = pygame.mixer.Sound(r"assets/sword-sound-260274.mp3")
-        self.som_golpe.set_volume(0.4)
+        self.som_golpe.set_volume(0.5)
 
-        self.debug_ataque = False
+        self.debug_ataque = True
 
     # carrega todos os sprites do personagem para animação
     def importar_sprites_personagem(self):
@@ -158,16 +158,16 @@ class Jogador(pygame.sprite.Sprite):
 
             #aumentar o range de ataque para onde o personagem olha
             if "baixo" in self.estado:
-                hitbox_ataque.y += 40
+                hitbox_ataque.y += 45
             
             elif "cima" in self.estado:
-                hitbox_ataque.y -= 40
+                hitbox_ataque.y -= 45
             
             elif "direita" in self.estado:
-                hitbox_ataque.x += 40
+                hitbox_ataque.x += 50
             
             elif "esquerda" in self.estado:
-                hitbox_ataque.x -= 40
+                hitbox_ataque.x -= 50
             
             hitbox_ataque.inflate_ip(20, 20) #aumentar range lateral
 
@@ -176,7 +176,7 @@ class Jogador(pygame.sprite.Sprite):
                     inimigo.vida -= self.ataque
                     if inimigo.vida <= 0:
                         inimigo.kill()
-                    self.debug_ataque = True
+                    self.debug_ataque = False
   
 
     # controla animação do personagem
@@ -184,6 +184,8 @@ class Jogador(pygame.sprite.Sprite):
         frames = self.animacoes[self.estado]
         self.frame_indice += self.velocidade_animacao
         if self.frame_indice >= len(frames):
+            if self.estado == 'Atacar':
+                self.debug_ataque = False
             self.frame_indice = 0
         
         self.image = frames[int(self.frame_indice)]
