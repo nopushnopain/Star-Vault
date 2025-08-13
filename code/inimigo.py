@@ -13,7 +13,7 @@ class enemy (Entity):
         self.import_sprites_inimigo()
         self.image = self.animacoes[self.status][self.indice_frame]
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0, -10)  
+        self.hitbox = self.rect.inflate(monster_data[self.nome_inimigo]['D1'], monster_data[self.nome_inimigo]['D2'])
 
         #movimento
 
@@ -54,20 +54,22 @@ class enemy (Entity):
     def get_status(self,jogador):
         distancia = self.get_jogador_distancia_direcao(jogador)[0]
 
-        if distancia <= self.raio_ataque and self.can_ataque:
+        if distancia <= 60 and self.can_ataque:
             if self.status != 'ataque':
                 self.indice_frame = 0
             self.status = 'ataque'
-        elif distancia <= self.raio_percepcao:
+
+        elif distancia <= self.raio_percepcao and distancia > 60:
             self.status = 'move'
+        #elif distancia > 60:
         else:
             self.status = 'idle'
 
     def actions(self, jogador):
         if self.status == 'ataque':
             self.atk_tempo = pygame.time.get_ticks()
-
-            if self.hitbox.colliderect(jogador.hitbox) and self.can_ataque:
+            atk_hitbox = self.hitbox.copy().inflate(60, 60)
+            if atk_hitbox.colliderect(jogador.hitbox) and self.can_ataque:
                 jogador.vida -= self.dano
                 self.can_ataque = False
 
