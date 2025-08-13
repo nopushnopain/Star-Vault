@@ -33,12 +33,12 @@ class Jogo:
         self.pause_menu = PauseMenu(self.janela, self.relogio)
 
         # Toca música do menu e exibe o menu inicial
-        tocar_musica('assets/musica_menu.mp3')
+        #tocar_musica('assets/musica_menu.mp3')
         self.menu.mostrar_menu()
 
         # Se o jogador clicou em "JOGAR"
         if self.menu.estado == 'jogo':
-            tocar_musica('assets/forest.mp3')
+            #tocar_musica('assets/forest.mp3')
             self.mapa_jogo = Mapa()
         else:
             self.mapa_jogo = None
@@ -58,6 +58,67 @@ class Jogo:
         for item in self.itens:
             self.mapa_jogo.sprites_visiveis.add(item)
 
+
+    def mostrar_game_over(self):
+        #tocar_musica('assets/game_over_sound.mp3', volume=0.5, loop=-1)
+        
+       
+        fonte_titulo = pygame.font.SysFont('Comic Sans MS', 70, bold=True)
+        fonte_opcao = pygame.font.SysFont('Comic Sans MS', 40)
+        
+        opcoes = ["Voltar ao Menu", "Sair"]
+        botoes = []
+        espacamento = 80 
+
+        while True:
+            self.janela.fill("black")
+            texto = fonte_titulo.render("GAME OVER", True, (255, 0, 0))
+            sombra = fonte_titulo.render("GAME OVER", True, (100, 0, 0))
+            texto_rect = texto.get_rect(center=(LARGURA // 2, ALTURA // 3))
+
+            # sombreamento do texto
+            self.janela.blit(sombra, (texto_rect.x + 3, texto_rect.y + 3))
+            self.janela.blit(texto, texto_rect)
+
+            # botao arredondado
+            mouse_pos = pygame.mouse.get_pos()
+            botoes.clear()
+
+            for i, opcao in enumerate(opcoes):
+                y = ALTURA // 2 + i * espacamento
+                texto_opcao = fonte_opcao.render(opcao, True, (255, 255, 255))
+                rect_opcao = texto_opcao.get_rect(center=(LARGURA // 2, y))
+
+                area_botao = rect_opcao.inflate(40, 20)
+
+                if area_botao.collidepoint(mouse_pos):
+                    cor_fundo = (70, 85, 110)
+                    cor_texto = (0, 0, 0)
+                else:
+                    cor_fundo = (70, 70, 70)
+                    cor_texto = (255, 255, 255)
+
+                # Desenha retângulo arredondado para o botão
+                pygame.draw.rect(self.janela, cor_fundo, area_botao, border_radius=12)
+
+                # Renderiza o texto do botão
+                texto_opcao = fonte_opcao.render(opcao, True, cor_texto)
+                self.janela.blit(texto_opcao, rect_opcao)
+
+                botoes.append((opcao.lower(), area_botao))
+
+            pygame.display.update()
+
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+                    for nome_opcao, rect in botoes:
+                        if rect.collidepoint(evento.pos):
+                            return nome_opcao 
+
                         
     def executar(self):
         while True:
@@ -71,12 +132,12 @@ class Jogo:
                     acao = self.pause_menu.mostrar_pause_menu()
 
                     if acao == "menu":
-                        tocar_musica('assets/musica_menu.mp3')
+                        #tocar_musica('assets/musica_menu.mp3')
                         self.menu.estado = "menu"
                         self.menu.mostrar_menu()
 
                         if self.menu.estado == 'jogo':
-                            tocar_musica('assets/forest.mp3')
+                            #tocar_musica('assets/forest.mp3')
                             self.mapa_jogo = Mapa()
                     else:
                         pygame.mixer.music.unpause()

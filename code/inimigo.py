@@ -14,14 +14,16 @@ class enemy (Entity):
         self.status = 'idle'
         self.import_sprites_inimigo()
         self.image = self.animacoes[self.status][self.indice_frame]
+
+        #     self.image = pygame.transform.scale(self.image, (60, 60))
         self.rect = self.image.get_rect(topleft=pos)
+
         self.hitbox = self.rect.inflate(0, -10)  
         self.som_dano = pygame.mixer.Sound("assets\Dano.mp3")
         self.som_dano.set_volume(0.4)
-
+        self.hitbox = self.rect.inflate(0, -10)
 
         #movimento / ataque 
-
         self.can_ataque = True
         self.atk_cooldown = 500
         self.atk_tempo = None
@@ -60,20 +62,22 @@ class enemy (Entity):
     def get_status(self,jogador):
         distancia = self.get_jogador_distancia_direcao(jogador)[0]
 
-        if distancia <= self.raio_ataque and self.can_ataque:
+        if distancia <= 60 and self.can_ataque:
             if self.status != 'ataque':
                 self.indice_frame = 0
             self.status = 'ataque'
-        elif distancia <= self.raio_percepcao:
+
+        elif distancia <= self.raio_percepcao and distancia > 60:
             self.status = 'move'
+        #elif distancia > 60:
         else:
             self.status = 'idle'
 
     def actions(self, jogador):
-        if self.status == 'ataque':
-            self.atk_tempo = pygame.time.get_ticks()
-
-            if self.hitbox.colliderect(jogador.hitbox) and self.can_ataque:
+        if self.status == 'ataque' and jogador.estado != "Morte":
+            self.atk_tempo = pygame.time.get_ticks()         
+            atk_hitbox = self.hitbox.copy().inflate(60, 60)
+            if atk_hitbox.colliderect(jogador.hitbox) and self.can_ataque:
                 self.som_dano.play()
                 jogador.vida -= self.dano
                 self.can_ataque = False
@@ -102,29 +106,10 @@ class enemy (Entity):
             if current_time - self.atk_tempo >= self.atk_cooldown:
                 self.can_ataque = True
     
-    def drop_itens(self):
-        if self._dropado:
-            return
-        if not self.grupo_itens or not self.sprites_visiveis:
-            self._dropado = True
-            return
-        lista_itens = [
-            ("itens/heart.png", "vida"),
-            ("itens/speed.png", "velocidade"),
-            ("itens/strong.png", "ataque"),
-        ]
-        arquivo, tipo = random.choice(lista_itens)
-        Itens(self.rect.centerx, self.rect.centery, arquivo, tipo, self.grupo_itens, self.sprites_visiveis)
-        self._dropado = True
-
     def update(self):
         self.move(self.velocidade)
         self.animate()
         self.cooldown()
-        
-        if self.vida <= 0 and not self.dropado:
-            self.drop_itens()
-            self.kill()
 
     def enemy_update(self,jogador):
         self.get_status(jogador)

@@ -31,7 +31,7 @@ class Jogador(pygame.sprite.Sprite):
         
         #vida
         self.vida = 4
-        self.ataque = 10  # dano de ataque
+        self.ataque = 1  # dano de ataque
 
         # colisões
         self.sprites_colisao = sprites_colisao
@@ -77,37 +77,37 @@ class Jogador(pygame.sprite.Sprite):
     # captura teclas pressionadas
     def capturar_input(self):
         teclas = pygame.key.get_pressed()
-
-        if not self.atacando:
-            # movimento vertical
-            if teclas[pygame.K_UP]:
-                self.direcao.y = -1
-                self.estado = "Andar_cima"
-            elif teclas[pygame.K_DOWN]:
-                self.direcao.y = 1
-                self.estado = "Andar_baixo"
-            else:
-                self.direcao.y = 0
+        if self.estado != "Morte":
+            if not self.atacando:
+                # movimento vertical
+                if teclas[pygame.K_UP]:
+                    self.direcao.y = -1
+                    self.estado = "Andar_cima"
+                elif teclas[pygame.K_DOWN]:
+                    self.direcao.y = 1
+                    self.estado = "Andar_baixo"
+                else:
+                    self.direcao.y = 0
+                
+                # movimento horizontal
+                if teclas[pygame.K_RIGHT]:
+                    self.direcao.x = 1
+                    self.estado = "Andar_direita"
+                elif teclas[pygame.K_LEFT]:
+                    self.direcao.x = -1
+                    self.estado = "Andar_esquerda"
+                else:
+                    self.direcao.x = 0
             
-            # movimento horizontal
-            if teclas[pygame.K_RIGHT]:
-                self.direcao.x = 1
-                self.estado = "Andar_direita"
-            elif teclas[pygame.K_LEFT]:
-                self.direcao.x = -1
-                self.estado = "Andar_esquerda"
-            else:
-                self.direcao.x = 0
-        
-        # ataque
-        if teclas[pygame.K_SPACE] and not self.atacando:
-            self.atacando = True
-            self.tempo_inicio_ataque = pygame.time.get_ticks()
-            self.som_golpe.play()
+            # ataque
+            if teclas[pygame.K_SPACE] and not self.atacando:
+                self.atacando = True
+                self.tempo_inicio_ataque = pygame.time.get_ticks()
+                self.som_golpe.play()
 
-        #Morte
-        if self.vida <= 0:
-            self.estado = "Morte"
+            #Morte
+            if self.vida <= 0:
+                self.estado = "Morte"
 
     # gerencia tempo de recarga das ações
     def gerenciar_cooldowns(self):
@@ -162,18 +162,21 @@ class Jogador(pygame.sprite.Sprite):
 
             #aumentar o range de ataque para onde o personagem olha
             if "baixo" in self.estado:
-                hitbox_ataque.y += 45
+
+                hitbox_ataque.y += 50
             
             elif "cima" in self.estado:
-                hitbox_ataque.y -= 45
+                hitbox_ataque.y -= 50
+
             
             elif "direita" in self.estado:
                 hitbox_ataque.x += 50
             
             elif "esquerda" in self.estado:
                 hitbox_ataque.x -= 50
-            
-            hitbox_ataque.inflate_ip(20, 20) #aumentar range lateral
+
+
+            hitbox_ataque.inflate_ip(30, 30) #aumentar range lateral
 
             for inimigo in inimigos:
                 if hitbox_ataque.colliderect(inimigo.hitbox):
