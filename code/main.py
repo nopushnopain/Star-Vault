@@ -6,7 +6,7 @@ from settings import *
 from menu import Menu
 from pause_menu import PauseMenu
 from interface import Interface
-from consumivel import cria_itens_aleatorios
+from consumivel import drop_itens 
 
 def tocar_musica(caminho, volume=0.5, loop=-1):
     pygame.mixer.music.stop()  # Garante reinício
@@ -45,8 +45,12 @@ class Jogo:
         self.itens = pygame.sprite.Group()
         self.jogador = self.mapa_jogo.jogador
 
+        if hasattr(self.mapa_jogo, 'grupo_inimigos'):
+            for inim in self.mapa_jogo.grupo_inimigos:
+                inim.grupo_itens = self.itens
+                inim.sprites_visiveis = self.mapa_jogo.sprites_visiveis
         # Cria os itens aleatórios no mapa, adicionando nos grupos
-        cria_itens_aleatorios(self.jogador, self.mapa_jogo.sprites_visiveis, self.itens, qntd=6)
+        #cria_itens_aleatorios(self.jogador, self.mapa_jogo.sprites_visiveis, self.itens, qntd=6)
 
         self.interface = Interface(self.janela, self.jogador.vida)
 

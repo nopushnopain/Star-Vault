@@ -1,10 +1,12 @@
 import pygame
+import random
 from settings import *
 from support import import_folder
 from entidade import Entity
+from consumivel import Itens
 
 class enemy (Entity):
-    def __init__ (self,nome,pos,groups, obstaculo_sprites):
+    def __init__ (self,nome,pos,groups, obstaculo_sprites,sprites_visiveis = None, grupo_itens = None):
         #
         super().__init__(groups)
         self.nome_inimigo = nome
@@ -14,13 +16,16 @@ class enemy (Entity):
         self.image = self.animacoes[self.status][self.indice_frame]
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)  
+        
+        # guardar referencias de drop itens 
+        self.sprites_visiveis = sprites_visiveis
+        self.grupo_itens = grupo_itens
 
-        #movimento
+        #movimento / ataque 
 
         self.can_ataque = True
         self.atk_cooldown = 500
         self.atk_tempo = None
-
         self.obstacle_sprites = obstaculo_sprites
 
         #status
@@ -31,7 +36,9 @@ class enemy (Entity):
         self.velocidade = inimigo_info['velocidade']
         self.raio_ataque = inimigo_info['raio_ataque']
         self.raio_percepcao = inimigo_info['raio_percepcao']    
-    
+        
+        # evitar dropes duplicados
+        self.dropado = False 
     
     def import_sprites_inimigo(self):
         self.animacoes = {'idle':[],'move':[],'ataque':[]}
@@ -94,11 +101,30 @@ class enemy (Entity):
             current_time = pygame.time.get_ticks()
             if current_time - self.atk_tempo >= self.atk_cooldown:
                 self.can_ataque = True
+    
+    def drop_itens(self):
+        if self._dropado:
+            return
+        if not self.grupo_itens or not self.sprites_visiveis:
+            self._dropado = True
+            return
+        lista_itens = [
+            ("itens/heart.png", "vida"),
+            ("itens/speed.png", "velocidade"),
+            ("itens/strong.png", "ataque"),
+        ]
+        arquivo, tipo = random.choice(lista_itens)
+        Itens(self.rect.centerx, self.rect.centery, arquivo, tipo, self.grupo_itens, self.sprites_visiveis)
+        self._dropado = True
 
     def update(self):
         self.move(self.velocidade)
         self.animate()
         self.cooldown()
+        
+        if self.vida <= 0 and not self.dropado:
+            self.drop_itens()
+            self.kill()
 
     def enemy_update(self,jogador):
         self.get_status(jogador)
