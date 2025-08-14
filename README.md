@@ -1,11 +1,26 @@
-# Star-Vault
+  # Aventuras do Ronaldinho
 
 
-- Coletáveis: José
-- Inimigos:   Gabriel
-- Mapa:       Vitor
-- Personagem: Luciano
-- UI:         João
+## Descrição do jogo
+Aventuras do Ronaldinho é um jogo 2D desenvolvido em  python utilizando a biblioteca pygmae. O MC é um guerreiro medieval que enfreta
+diversos mobs em diversos cenarios afim de sobrevivier.
+ 
+## Arquiterura e orgazição do projeto
+O código do jogo está organizado da seguinte forma:
+* assets
+* code
+* graficos
+* itens
+* mapa_csv
+O arquivo main.py está localizado na pasta code, juntamente com o restante das classes utilizadas no projeto.
+
+## Ferramentas utilizadas no processo de criação
+* GitHub
+* VSCode
+* Pygame
+  
+
+  
 
 
 # Instruções p/ o grupo
