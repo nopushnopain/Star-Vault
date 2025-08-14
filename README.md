@@ -1,10 +1,9 @@
-  # Aventuras do Ronaldinho
+# <p align="center"> 🎮 Aventuras do Ronaldinho 🎮 </p>
 
 
 ## Descrição do jogo
-Aventuras do Ronaldinho é um jogo 2D desenvolvido em  python utilizando a biblioteca pygmae. O MC é um guerreiro medieval que enfreta
-diversos mobs em diversos cenarios afim de sobrevivier.
- 
+Aventuras do Ronaldinho é um jogo 2D desenvolvido em python utilizando a biblioteca pygame baseado em jogos dos anos 90. Ronaldinho é um guerreiro medieval que deve matar 10 inimigos para vencer o jogo.
+
 ## Arquiterura e orgazição do projeto
 O código do jogo está organizado da seguinte forma:
 * assets
@@ -12,31 +11,57 @@ O código do jogo está organizado da seguinte forma:
 * graficos
 * itens
 * mapa_csv
+  
 O arquivo main.py está localizado na pasta code, juntamente com o restante das classes utilizadas no projeto.
 
 ## Ferramentas utilizadas no processo de criação
 * GitHub
 * VSCode
 * Pygame
+* itch.io
+
+## Divisão da equipe
+*  Luciano Junior (ljsj): Desenvolvimento do protagonista, ajuste de bugs e mecânica do MC.
+*  Guilherme Vitor (gvca): Mapa, câmera com o protagonista.
+*  José Lucas (jlhm): Interseção com os consumiveis, placar de consumiveis, geração de consumiveis, hitbox de consumiveis.
+*  Gabriel Vieria (gvnrb): Criação e implementação dos inimigos.
+*  João Victor (jvajs): Criação e implementação da interface grafica como Menu, Pause menu, encerramento de partida e organização da equipe.
+
+## Sprints
+### Sprint 1
+* Definição de ferramentas.
+* Ideia do jogo.
+* movimentação do personagem.
+### Sprint 2
+* Total movimentação do personagem.
+* Função de cada membro da equipe.
+* Possiveis coletáveis.
+### Sprint 3
+* Menu funcional.
+* Definição dos Coletáveis(bonus de vida, dano e velocidade).
+* Mapa funcional.
+### Sprint 4
+* Musica temática.
+* Coletáveis gerados no mapa.
+* POO dos inimigos.
+### Sprint 5
+* Inimigos gerados no mapa.
+* Interação do protagonista com os inimigos.
+* colisão com o mapa.
+* implementação final dos sprites e personagens.
+
+## Conceitos Aprendidos e Utilizados no desenvolvimento do projeto
+Além do que foi passado em sala de aula como listas, funções, laços, aprendemos novas ferramentas e aplicamos em nosso
+projeto como:
+* Programação Orientada a Objetos (POO).
+* Versionamento de código com Git e GitHub.
+* Biblioteca Pygame.
+* Trabalho em equipe.
+
+## Dificuldades e aprendizados
+* GitHub: muitos de nós não tinhamos experiência com versionamento de código e encontramos dificuldades com os comandos e fluxo.
+* Pygame: Compreender a biblioteca, suas funções e como conectar tudo para fazer o todo funcionar.
+* Programação Orientadas a Objetos: Pelo período ter sido curto, tivemos que correr atrás de como funcionava esse paradigma que para nós era novo.
   
 
-  
-
-
-# Instruções p/ o grupo
-
-Configure o Git:
-1) git config --global user.name "Seu Nome"
-2) git config --global user.email "seuemail@example.com" (o mesmo do github)
-
-Dica de como dar upload no git (ATENÇÃO: VERIFIQUE SUA BRANCH):
-1) git pull  # Baixa alterações do remoto
-2) git add . # Adiciona as alteracoes e sinaliza ao git
-3) git commit -m 'mensagem' # Registra o commit (para que todos possam ver)
-4) git push # Envia commits para o remoto (para que sincronize com o git)
-
-Boas práticas:
-- Salvem as png's das entidades na pasta graficos e separem por entidade, exemplo: player, monstros, arvores, consumiveis, particulas, etc.
-- Não mergir sua branch na main até que todos estejam ciente.
-- Trabaia mizera
 
