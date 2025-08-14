@@ -18,7 +18,7 @@ class Jogador(pygame.sprite.Sprite):
         self.importar_sprites_personagem()
         self.estado = "Idle_baixo"
         self.frame_indice = 0
-        self.velocidade_animacao = 0.15
+        self.velocidade_animacao = 0.13
         self.dano_aplicado = False
        
         # movimento

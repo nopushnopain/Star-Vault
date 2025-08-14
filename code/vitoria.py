@@ -8,6 +8,7 @@ def tocar_musica(caminho, volume=0.5):
     pygame.mixer.music.load(caminho)
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play()
+    
 class Vitoria:
     def __init__(self, janela, relogio):
         self.janela = janela
@@ -26,8 +27,8 @@ class Vitoria:
             self.janela.fill("black")
 
             # Título com sombra
-            texto = self.fonte_titulo.render("Vitoria", True, (255, 0, 0))
-            sombra = self.fonte_titulo.render("Vitoria", True, (100, 0, 0))
+            texto = self.fonte_titulo.render("Vitória", True, (255, 0, 0))
+            sombra = self.fonte_titulo.render("Vitória", True, (100, 0, 0))
             texto_rect = texto.get_rect(center=(LARGURA // 2, ALTURA // 3))
             self.janela.blit(sombra, (texto_rect.x + 3, texto_rect.y + 3))
             self.janela.blit(texto, texto_rect)
