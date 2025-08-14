@@ -65,8 +65,6 @@ class Mapa:
 
                             if coluna == '390':
                                 nome_inimigo = 'Blue'
-                            elif coluna == '393':
-                                 nome_inimigo = 'Goblin'
                             elif coluna == '392':
                                 nome_inimigo = 'Lobisomem'
                             elif coluna == '391':

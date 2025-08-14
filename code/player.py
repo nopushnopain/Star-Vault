@@ -19,6 +19,7 @@ class Jogador(pygame.sprite.Sprite):
         self.estado = "Idle_baixo"
         self.frame_indice = 0
         self.velocidade_animacao = 0.15
+        self.dano_aplicado = False
        
         # movimento
         self.direcao = pygame.math.Vector2()  # armazena x,y
@@ -30,13 +31,13 @@ class Jogador(pygame.sprite.Sprite):
         self.tempo_inicio_ataque = None
         
         #vida
-        self.vida = 4
-        self.ataque = 1  # dano de ataque
+        self.vida = 10
+        self.ataque = 6  # dano de ataque
 
         # colisões
         self.sprites_colisao = sprites_colisao
 
-        #sons
+        # sons
         self.som_golpe = pygame.mixer.Sound(r"assets/sword-sound-260274.mp3")
         self.som_golpe.set_volume(0.5)
 
@@ -76,44 +77,47 @@ class Jogador(pygame.sprite.Sprite):
 
     # captura teclas pressionadas
     def capturar_input(self):
-        teclas = pygame.key.get_pressed()
-        if self.estado != "Morte":
-            if not self.atacando:
-                # movimento vertical
-                if teclas[pygame.K_UP]:
-                    self.direcao.y = -1
-                    self.estado = "Andar_cima"
-                elif teclas[pygame.K_DOWN]:
-                    self.direcao.y = 1
-                    self.estado = "Andar_baixo"
-                else:
-                    self.direcao.y = 0
+        if self.estado != "Morte" and self.vida > 0:
+            teclas = pygame.key.get_pressed()
+            if self.estado != "Morte":
+                if not self.atacando:
+                    # movimento vertical
+                    if teclas[pygame.K_UP]:
+                        self.direcao.y = -1
+                        self.estado = "Andar_cima"
+                    elif teclas[pygame.K_DOWN]:
+                        self.direcao.y = 1
+                        self.estado = "Andar_baixo"
+                    else:
+                        self.direcao.y = 0
+                    
+                    # movimento horizontal
+                    if teclas[pygame.K_RIGHT]:
+                        self.direcao.x = 1
+                        self.estado = "Andar_direita"
+                    elif teclas[pygame.K_LEFT]:
+                        self.direcao.x = -1
+                        self.estado = "Andar_esquerda"
+                    else:
+                        self.direcao.x = 0
                 
-                # movimento horizontal
-                if teclas[pygame.K_RIGHT]:
-                    self.direcao.x = 1
-                    self.estado = "Andar_direita"
-                elif teclas[pygame.K_LEFT]:
-                    self.direcao.x = -1
-                    self.estado = "Andar_esquerda"
-                else:
-                    self.direcao.x = 0
-            
-            # ataque
-            if teclas[pygame.K_SPACE] and not self.atacando:
-                self.atacando = True
-                self.tempo_inicio_ataque = pygame.time.get_ticks()
-                self.som_golpe.play()
+                # ataque
+                if teclas[pygame.K_SPACE] and not self.atacando:
+                    self.atacando = True
+                    self.tempo_inicio_ataque = pygame.time.get_ticks()
+                    self.som_golpe.play()
 
-            #Morte
-            if self.vida <= 0:
-                self.estado = "Morte"
+        # morte
+        if self.vida <= 0:
+            self.estado = "Morte"
 
     # gerencia tempo de recarga das ações
     def gerenciar_cooldowns(self):
         agora = pygame.time.get_ticks()
         if self.atacando and (agora - self.tempo_inicio_ataque >= self.tempo_recarga_ataque):
             self.atacando = False
+            self.dano_aplicado = False  # reseta para próximo ataque
+
     
     # move o jogador e verifica colisões
     def mover(self, velocidade):
@@ -157,34 +161,27 @@ class Jogador(pygame.sprite.Sprite):
 
     #Interaçao de Ataque com inimigos
     def atacar(self, inimigos):
-        if self.atacando:
+        if self.atacando and not self.dano_aplicado:
             hitbox_ataque = self.hitbox.copy()
 
-            #aumentar o range de ataque para onde o personagem olha
             if "baixo" in self.estado:
-
-                hitbox_ataque.y += 50
-            
+                hitbox_ataque.y += 70
             elif "cima" in self.estado:
-                hitbox_ataque.y -= 50
-
-            
+                hitbox_ataque.y -= 55
             elif "direita" in self.estado:
-                hitbox_ataque.x += 50
-            
+                hitbox_ataque.x += 70
             elif "esquerda" in self.estado:
-                hitbox_ataque.x -= 50
+                hitbox_ataque.x -= 55
 
-
-            hitbox_ataque.inflate_ip(30, 30) #aumentar range lateral
+            hitbox_ataque.inflate_ip(50, 50)
 
             for inimigo in inimigos:
                 if hitbox_ataque.colliderect(inimigo.hitbox):
                     inimigo.vida -= self.ataque
                     if inimigo.vida <= 0:
                         inimigo.kill()
-                    self.debug_ataque = False
-  
+
+            self.dano_aplicado = True  # evita aplicar de novo
 
     # controla animação do personagem
     def animar(self):

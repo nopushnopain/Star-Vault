@@ -25,7 +25,7 @@ class enemy (Entity):
 
         #movimento / ataque 
         self.can_ataque = True
-        self.atk_cooldown = 500
+        self.atk_cooldown = 2000
         self.atk_tempo = None
         self.obstacle_sprites = obstaculo_sprites
 

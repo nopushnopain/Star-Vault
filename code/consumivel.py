@@ -25,7 +25,7 @@ def cria_itens_aleatorios(jogador, sprites_visiveis, grupo_itens, qntd = 5):
             (jogador.rect.centerx + 626, jogador.rect.centery - 500),
             (jogador.rect.centerx - 650, jogador.rect.centery + 329),
             (jogador.rect.centerx - 1119, jogador.rect.centery + 91),
-            (jogador.rect.centerx - 545, jogador.rect.centery - 999),
+            (jogador.rect.centerx - 500, jogador.rect.centery - 800),
             (jogador.rect.centerx + 535, jogador.rect.centery + 661),
             (jogador.rect.centerx - 1089, jogador.rect.centery - 400),
             (jogador.rect.centerx - 520, jogador.rect.centery + 871),
