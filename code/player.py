@@ -33,6 +33,7 @@ class Jogador(pygame.sprite.Sprite):
         #vida
         self.vida = 10
         self.ataque = 6  # dano de ataque
+        self.pontos = 0  # pontos coletados
 
         # colisões
         self.sprites_colisao = sprites_colisao
@@ -180,6 +181,7 @@ class Jogador(pygame.sprite.Sprite):
                     inimigo.vida -= self.ataque
                     if inimigo.vida <= 0:
                         inimigo.kill()
+                        self.pontos += 1
 
             self.dano_aplicado = True  # evita aplicar de novo
 
