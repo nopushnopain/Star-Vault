@@ -2,8 +2,7 @@
 
 
 ## Descrição do jogo
-Aventuras do Ronaldinho é um jogo 2D desenvolvido em python utilizando a biblioteca pygame baseado em jogos dos anos 90. O MC é um guerreiro medieval que enfreta
-diversos mobs em diversos cenarios afim de sobrevivier.
+Aventuras do Ronaldinho é um jogo 2D desenvolvido em python utilizando a biblioteca pygame baseado em jogos dos anos 90. Ronaldinho é um guerreiro medieval que deve matar 10 inimigos para vencer o jogo.
 
 ## Arquiterura e orgazição do projeto
 O código do jogo está organizado da seguinte forma:
