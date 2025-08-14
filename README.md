@@ -37,5 +37,32 @@ O arquivo main.py está localizado na pasta code, juntamente com o restante das 
 * Total movimentação do personagem.
 * Função de cada membro da equipe.
 * Possiveis coletáveis.
+### Sprint 3
+* Menu funcional.
+* Definição dos Coletáveis(bonus de vida, dano e velocidade).
+* Mapa funcional.
+### Sprint 4
+* Musica temática.
+* Coletáveis gerados no mapa.
+* POO dos inimigos.
+### Sprint 5
+* Inimigos gerados no mapa.
+* Interação do protagonista com os inimigos.
+* colisão com o mapa.
+* implementação final dos sprites e personagens.
+
+## Conceitos Aprendidos e Utilizados no desenvolvimento do projeto
+Além do que foi passado em sala de aula como listas, funções, laços, aprendemos novas ferramentas e aplicamos em nosso
+projeto como:
+* Programação Orientada a Objetos (POO).
+* Versionamento de código com Git e GitHub.
+* Biblioteca Pygame.
+* Trabalho em equipe.
+
+## Dificuldades e aprendizados
+* GitHub: muitos de nós não tinhamos experiência com versionamento de código e encontramos dificuldades com os comandos e fluxo.
+* Pygame: Compreender a biblioteca, suas funções e como conectar tudo para fazer o todo funcionar.
+* Programação Orientadas a Objetos: Pelo período ter sido curto, tivemos que correr atrás de como funcionava esse paradigma que para nós era novo.
+  
 
 
