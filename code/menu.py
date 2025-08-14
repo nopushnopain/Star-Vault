@@ -61,7 +61,7 @@ class Menu:
             self.janela.blit(self.bg, (0, 0))
 
             # Título
-            self.desenhar_texto_menu("As Aventuras de Robinho", (255, 215, 0), LARGURA // 2, ALTURA // 6, self.fonte_titulo, sombra=True)
+            self.desenhar_texto_menu("As Aventuras de Ronaldinho", (255, 215, 0), LARGURA // 2, ALTURA // 6, self.fonte_titulo, sombra=True)
 
             # Botões
             self.btn_jogar = self.desenhar_botao_menu("JOGAR", ALTURA // 2 + 200, (50, 150, 50), (255, 255, 255))

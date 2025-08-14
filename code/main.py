@@ -20,7 +20,7 @@ class Jogo:
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
-        pygame.display.set_caption("Robinho")
+        pygame.display.set_caption("As Aventuras de Ronaldinho")
         
         self.janela = pygame.display.set_mode((LARGURA, ALTURA))
         self.relogio = pygame.time.Clock()
@@ -121,25 +121,25 @@ class Jogo:
                             pygame.quit()
                             sys.exit()
 
-                if self.jogador.pontos>=10:
-                    vitoria = Vitoria(self.janela, self.relogio)
-                    acao = vitoria.mostrar()
-                    
-                    if acao == 'voltar ao menu':
-                        tocar_musica('assets/musica_menu.mp3')
-                        self.menu.estado = 'menu'
-                        self.menu.mostrar_menu()
+                    if self.jogador.pontos>=10:
+                        vitoria = Vitoria(self.janela, self.relogio)
+                        acao = vitoria.mostrar()
+                        
+                        if acao == 'voltar ao menu':
+                            tocar_musica('assets/musica_menu.mp3')
+                            self.menu.estado = 'menu'
+                            self.menu.mostrar_menu()
 
                         if self.menu.estado == 'jogo':
                             tocar_musica('assets/forest.mp3')
                             novo_jogo = Jogo()
                             novo_jogo.executar()
 
-                    elif acao == 'sair':
-                        pygame.quit()
-                        sys.exit()
-                    # pygame.quit()
-                    # sys.exit()
+                        elif acao == 'sair':
+                            pygame.quit()
+                            sys.exit()
+                        # pygame.quit()
+                        # sys.exit()
 
                 #debug atributos 
                 debug(f"Vida: {getattr(self.jogador, 'vida', 0)}", 10, LARGURA - 10)
