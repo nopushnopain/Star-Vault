@@ -20,7 +20,7 @@ class Jogo:
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
-        pygame.display.set_caption("Star Vault")
+        pygame.display.set_caption("As Aventuras de Ronaldinho")
         
         self.janela = pygame.display.set_mode((LARGURA, ALTURA))
         self.relogio = pygame.time.Clock()
@@ -34,12 +34,12 @@ class Jogo:
         self.pause_menu = PauseMenu(self.janela, self.relogio)
 
         # toca musica do menu e exibe o menu inicial
-        # tocar_musica('assets/musica_menu.mp3')
+        tocar_musica('assets/musica_menu.mp3')
         self.menu.mostrar_menu()
 
         # Se o jogador clicou em "JOGAR"
         if self.menu.estado == 'jogo':
-            #tocar_musica('assets/forest.mp3')
+            tocar_musica('assets/forest.mp3')
             self.mapa_jogo = Mapa()
         else:
             self.mapa_jogo = None
@@ -72,12 +72,12 @@ class Jogo:
                     acao = self.pause_menu.mostrar_pause_menu()
 
                     if acao == "menu":
-                        #tocar_musica('assets/musica_menu.mp3')
+                        tocar_musica('assets/musica_menu.mp3')
                         self.menu.estado = "menu"
                         self.menu.mostrar_menu()
 
                         if self.menu.estado == 'jogo':
-                            #tocar_musica('assets/forest.mp3')
+                            tocar_musica('assets/forest.mp3')
                             self.mapa_jogo = Mapa()
                     else:
                         pygame.mixer.music.unpause()
@@ -121,9 +121,10 @@ class Jogo:
                             pygame.quit()
                             sys.exit()
 
-                    if self.jogador.pontos>=10:
-                        vitoria = Vitoria(self.janela, self.relogio)
-                        acao = vitoria.mostrar()
+                    vitoria = Vitoria(self.janela, self.relogio)
+                    acao = vitoria.mostrar()
+
+                    if self.jogador.pontos >= 10:
                         
                         if acao == 'voltar ao menu':
                             tocar_musica('assets/musica_menu.mp3')
@@ -138,8 +139,6 @@ class Jogo:
                         elif acao == 'sair':
                             pygame.quit()
                             sys.exit()
-                        # pygame.quit()
-                        # sys.exit()
 
                 #debug atributos 
                 debug(f"Vida: {getattr(self.jogador, 'vida', 0)}", 10, LARGURA - 10)
