@@ -1,4 +1,4 @@
-  # Aventuras do Ronaldinho
+# <p align="center"> 🎮 Aventuras do Ronaldinho 🎮 </p>
 
 
 ## Descrição do jogo
@@ -37,16 +37,5 @@ O arquivo main.py está localizado na pasta code, juntamente com o restante das 
 * Total movimentação do personagem.
 * Função de cada membro da equipe.
 * Possiveis coletáveis.
-### Stpr
-  
 
-  
-
-
-
-
-Boas práticas:
-- Salvem as png's das entidades na pasta graficos e separem por entidade, exemplo: player, monstros, arvores, consumiveis, particulas, etc.
-- Não mergir sua branch na main até que todos estejam ciente.
-- Trabaia mizera
 
