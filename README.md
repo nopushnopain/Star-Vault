@@ -6,11 +6,11 @@ Aventuras do Ronaldinho é um jogo 2D desenvolvido em python utilizando a biblio
 do jogo é que Ronaldinho consiga derrota 10 inimigos para poder vencer e finalizar sua missão.
 
 ## Controle do jogo
-* > andar para a direita.
-* < andar para a esquerda.
-* ^ andar para cima.
-* v andar para baixo.
-* ESPAÇO para atacar.
+* '>' andar para a direita.
+* '<' andar para a esquerda.
+* '^' andar para cima.
+* 'v' andar para baixo.
+* 'ESPAÇO' para atacar.
 
 ## Arquitetura e organização do projeto
 <img width="303" height="923" alt="image" src="https://github.com/user-attachments/assets/91213fd8-a17b-4f86-bb53-0a761273000f" />
